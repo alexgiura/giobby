@@ -60,17 +60,13 @@ jobs:
             "${{ secrets.SSH_USER }}@${{ secrets.PRODUCTION_SERVER_IP }}" \
             "mkdir -p ~/giobby/backend"
 
-      - name: Write production env file
-        run: |
-          printf '%s\n' "${{ secrets.GIOBBY_ENV }}" > backend.env
-
       - name: Copy compose and env to server
         run: |
           scp -P "${{ secrets.SSH_PORT }}" -i ~/.ssh/id_rsa \
             docker-compose.yml \
             "${{ secrets.SSH_USER }}@${{ secrets.PRODUCTION_SERVER_IP }}:~/giobby/docker-compose.yml"
           scp -P "${{ secrets.SSH_PORT }}" -i ~/.ssh/id_rsa \
-            backend.env \
+            backend/.env \
             "${{ secrets.SSH_USER }}@${{ secrets.PRODUCTION_SERVER_IP }}:~/giobby/backend/.env"
 
       - name: Pull images and restart services
