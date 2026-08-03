@@ -38,8 +38,21 @@ services:
       POSTGRES_DB_HOST: db
       POSTGRES_DB_PORT: "5432"
       POSTGRES_DB_SSLMODE: disable
+      SWAGGER_PATH: /root/swagger.json
     ports:
       - "8080:8080"
+    networks:
+      - app
+
+  api-explorer:
+    image: alexgiura/giobby-api-explorer:prod
+    build: ./api-explorer
+    container_name: giobby_api_explorer
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
     networks:
       - app
 

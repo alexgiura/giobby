@@ -29,6 +29,9 @@ type Repository struct {
 	PersonalActivity     PersonalActivityRepository
 	User                 UserRepository
 	Settings             SettingsRepository
+	Message              MessageRepository
+	LoggedUser           LoggedUserRepository
+	Notify               NotifyRepository
 }
 
 // NewRepository initializes all repositories.
@@ -58,5 +61,8 @@ func NewRepository(db *pgxpool.Pool) *Repository {
 		PersonalActivity:    NewPersonalActivityRepository(db),
 		User:                NewUserRepository(db),
 		Settings:            NewSettingsRepository(db),
+		Message:             NewMessageRepository(db),
+		LoggedUser:          NewLoggedUserRepository(db),
+		Notify:              NewNotifyRepository(db),
 	}
 }

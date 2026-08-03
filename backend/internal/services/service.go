@@ -30,6 +30,9 @@ type AppServices struct {
 	PersonalActivity    PersonalActivityService
 	User                UserService
 	Settings            SettingsService
+	Message             MessageService
+	LoggedUser          LoggedUserService
+	Notify              NotifyService
 }
 
 // NewAppServices initializes all services.
@@ -63,5 +66,8 @@ func NewAppServices(repos *repository.Repository, cfg *config.Config) *AppServic
 		PersonalActivity:    NewPersonalActivityService(repos.PersonalActivity),
 		User:                NewUserService(repos.User),
 		Settings:            NewSettingsService(repos.Settings),
+		Message:             NewMessageService(repos.Message),
+		LoggedUser:          NewLoggedUserService(repos.LoggedUser),
+		Notify:              NewNotifyService(repos.Notify),
 	}
 }

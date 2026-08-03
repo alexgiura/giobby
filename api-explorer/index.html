@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giobby API Explorer</title>
+    <meta name="color-scheme" content="dark light" />
+    <style>
+      :root {
+        --bg: #0b0f19;
+        --panel: #121826;
+        --text: #e8eefc;
+        --muted: #9aa8c7;
+        --accent: #6ea8fe;
+        --border: #243049;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      .howto {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: linear-gradient(180deg, #152038 0%, var(--panel) 100%);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 18px;
+      }
+      .howto h1 {
+        margin: 0 0 6px;
+        font-size: 16px;
+        font-weight: 650;
+      }
+      .howto ol {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .howto code {
+        color: var(--accent);
+        background: rgba(110, 168, 254, 0.12);
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      .meta {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      #app {
+        height: calc(100% - 1px);
+        min-height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="howto">
+      <h1>Giobby API Explorer</h1>
+      <ol>
+        <li>Open <strong>Auth</strong> → run <code>register</code> or <code>login</code> → copy <code>access_token</code> from the response.</li>
+        <li>Click <strong>Authorize</strong> (lock icon) → paste the token → Authorize.</li>
+        <li>Pick an endpoint → fill path/query fields and the <strong>required body fields</strong> (schema marks them) → <strong>Send</strong>.</li>
+      </ol>
+      <div class="meta">
+        Server: <strong id="server-label"></strong>
+        — requests use this host automatically (works on localhost and on your server IP).
+      </div>
+    </div>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.28.11"></script>
+    <script>
+      const origin = window.location.origin;
+      document.getElementById("server-label").textContent = origin;
+
+      Scalar.createApiReference("#app", {
+        url: "/api/openapi.json",
+        // Force same-origin base URL (localhost:3000 OR http://SERVER_IP:3000)
+        servers: [
+          {
+            url: origin,
+            description: "This host (auto-detected)",
+          },
+        ],
+        theme: "purple",
+        darkMode: true,
+        layout: "modern",
+        defaultOpenAllTags: false,
+        persistAuth: true,
+        showSidebar: true,
+        // Show models so required body fields are visible
+        hideModels: false,
+        searchHotKey: "k",
+        authentication: {
+          preferredSecurityScheme: "bearerAuth",
+        },
+        defaultHttpClient: {
+          targetKey: "shell",
+          clientKey: "curl",
+        },
+      });
+    </script>
+  </body>
+</html>

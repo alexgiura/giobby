@@ -35,6 +35,7 @@ func isPublicPath(path, method string) bool {
 		"/api/auth/register": {http.MethodPost},
 		"/api/auth/login":    {http.MethodPost},
 		"/api/auth/refresh":  {http.MethodPost},
+		"/api/openapi.json":  {http.MethodGet},
 	}
 	if methods, ok := public[path]; ok {
 		for _, m := range methods {

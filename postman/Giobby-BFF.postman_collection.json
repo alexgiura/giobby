@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Giobby API (standalone)",
-    "description": "Local Go + PostgreSQL. OAuth-style auth: access_token + refresh_token in JSON. Use Authorization: Bearer {{accessToken}}.",
+    "name": "Giobby API (implemented)",
+    "description": "Generated from backend/internal/routes/routes.go — all implemented endpoints. Auth: Bearer {{accessToken}}. baseUrl defaults to http://localhost:8080/api.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -26,78 +26,70 @@
           "name": "GET /healthz",
           "request": {
             "method": "GET",
+            "header": [],
             "url": "http://localhost:8080/healthz"
           }
         }
       ]
     },
     {
-      "name": "Auth (OAuth-style)",
+      "name": "Auth",
       "item": [
         {
           "name": "POST /auth/register",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "if (pm.response.code === 201) {",
-                  "  const body = pm.response.json();",
-                  "  if (body.access_token) pm.collectionVariables.set('accessToken', body.access_token);",
-                  "  if (body.refresh_token) pm.collectionVariables.set('refreshToken', body.refresh_token);",
-                  "}"
-                ]
-              }
-            }
-          ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"demo\",\n  \"password\": \"password123\",\n  \"email\": \"demo@example.com\"\n}"
-            },
-            "url": "{{baseUrl}}/auth/register"
-          }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.access_token) pm.collectionVariables.set('accessToken', body.access_token);",
+                  "  if (body.refresh_token) pm.collectionVariables.set('refreshToken', body.refresh_token);",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "POST /auth/login",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "if (pm.response.code === 200) {",
-                  "  const body = pm.response.json();",
-                  "  if (body.access_token) pm.collectionVariables.set('accessToken', body.access_token);",
-                  "  if (body.refresh_token) pm.collectionVariables.set('refreshToken', body.refresh_token);",
-                  "}"
-                ]
-              }
-            }
-          ],
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"demo\",\n  \"password\": \"password123\"\n}"
-            },
-            "url": "{{baseUrl}}/auth/login",
-            "description": "Returns access_token, refresh_token, expires_in (OAuth-style)."
-          }
-        },
-        {
-          "name": "POST /auth/refresh",
+            }
+          },
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "if (pm.response.code === 200) {",
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
                   "  const body = pm.response.json();",
                   "  if (body.access_token) pm.collectionVariables.set('accessToken', body.access_token);",
                   "  if (body.refresh_token) pm.collectionVariables.set('refreshToken', body.refresh_token);",
@@ -105,55 +97,103 @@
                 ]
               }
             }
-          ],
+          ]
+        },
+        {
+          "name": "POST /auth/refresh",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/refresh",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"grant_type\": \"refresh_token\",\n  \"refresh_token\": \"{{refreshToken}}\"\n}"
-            },
-            "url": "{{baseUrl}}/auth/refresh"
-          }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.access_token) pm.collectionVariables.set('accessToken', body.access_token);",
+                  "  if (body.refresh_token) pm.collectionVariables.set('refreshToken', body.refresh_token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /auth/logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/logout",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 204 || pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('accessToken', '');",
+                  "  pm.collectionVariables.set('refreshToken', '');",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "GET /auth/me",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/auth/me"
-          }
-        },
-        {
-          "name": "POST /auth/logout",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.collectionVariables.set('accessToken', '');",
-                  "pm.collectionVariables.set('refreshToken', '');"
-                ]
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
               }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/auth/logout"
+            ],
+            "url": "{{baseUrl}}/auth/me"
           }
         }
       ]
     },
     {
-      "name": "Reference (Task 4)",
+      "name": "Reference",
       "item": [
         {
           "name": "GET /countries",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/countries"
           }
         },
@@ -161,16 +201,26 @@
           "name": "GET /countries/{id}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/countries/IT"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/countries/1"
           }
         },
         {
           "name": "GET /cities",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/cities?name=Roma"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/cities"
           }
         },
         {
@@ -178,21 +228,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/cities",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Chieti\",\n  \"pr\": \"CH\",\n  \"zip\": \"66100\",\n  \"country\": \"IT\",\n  \"state\": \"Abruzzo\"\n}"
-            },
-            "url": "{{baseUrl}}/cities"
+              "raw": "{\n  \"name\": \"București\",\n  \"countryId\": \"RO\"\n}"
+            }
           }
         },
         {
           "name": "GET /currencies",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/currencies"
           }
         },
@@ -200,7 +261,12 @@
           "name": "GET /currencies/{code}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/currencies/EUR"
           }
         },
@@ -208,7 +274,12 @@
           "name": "GET /um",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/um"
           }
         },
@@ -217,21 +288,32 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/um",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"um\": \"LT\",\n  \"description_IT\": \"Litri\",\n  \"shortDescription_IT\": \"LT\"\n}"
-            },
-            "url": "{{baseUrl}}/um"
+              "raw": "{\n  \"idUm\": \"PZ\",\n  \"description\": \"Pezzi\"\n}"
+            }
           }
         },
         {
           "name": "GET /um/{idUm}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/um/PZ"
           }
         },
@@ -240,29 +322,45 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/um/PZ",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description_IT\": \"Pezzi aggiornati\",\n  \"shortDescription_IT\": \"PZ\"\n}"
-            },
-            "url": "{{baseUrl}}/um/PZ"
+              "raw": "{\n  \"description\": \"Updated\"\n}"
+            }
           }
         },
         {
           "name": "DELETE /um/{idUm}",
           "request": {
             "method": "DELETE",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/um/LT"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/um/PZ"
           }
         },
         {
           "name": "GET /officesType",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/officesType"
           }
         },
@@ -270,7 +368,12 @@
           "name": "GET /contactsroles",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/contactsroles"
           }
         },
@@ -278,7 +381,12 @@
           "name": "GET /paymentterms",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/paymentterms"
           }
         },
@@ -287,34 +395,50 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/paymentterms",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"idPaymentType\": 1,\n  \"description\": \"Pagamento immediato\",\n  \"endOfMonth\": false,\n  \"extraDays\": 0,\n  \"pos\": [{ \"days\": 0, \"percentage\": 100 }]\n}"
-            },
-            "url": "{{baseUrl}}/paymentterms"
+              "raw": "{\n  \"description\": \"30 giorni\",\n  \"days\": 30\n}"
+            }
           }
         },
         {
           "name": "GET /paymentterms/{id}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/paymentterms/1"
           }
         }
       ]
     },
     {
-      "name": "Company (Task 5)",
+      "name": "Company",
       "item": [
         {
           "name": "GET /companies/{id}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companies/1"
           }
         },
@@ -322,7 +446,12 @@
           "name": "GET /companysettings/accountcenter",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companysettings/accountcenter"
           }
         },
@@ -331,21 +460,66 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/companysettings/accountcenter",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Nuovo centro\",\n  \"type\": \"COST\",\n  \"description\": \"Test\"\n}"
-            },
-            "url": "{{baseUrl}}/companysettings/accountcenter"
+              "raw": "{\n  \"code\": \"AC1\",\n  \"description\": \"Centro demo\"\n}"
+            }
           }
         },
         {
-          "name": "GET /companysettings/accountcenter/{id}",
+          "name": "GET /companysettings/accountcenter/{idAccountCenter}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/accountcenter/1"
+          }
+        },
+        {
+          "name": "PUT /companysettings/accountcenter/{idAccountCenter}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/accountcenter/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /companysettings/accountcenter/{idAccountCenter}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companysettings/accountcenter/1"
           }
         },
@@ -353,15 +527,25 @@
           "name": "GET /companysettings/accountcode",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/companysettings/accountcode?type=P"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/accountcode"
           }
         },
         {
           "name": "GET /companysettings/bank",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companysettings/bank"
           }
         },
@@ -370,29 +554,92 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/companysettings/bank",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Banca test\",\n  \"isCashdesk\": false,\n  \"accountCode\": \"1010\",\n  \"iban\": \"RO00TEST\"\n}"
-            },
-            "url": "{{baseUrl}}/companysettings/bank"
+              "raw": "{\n  \"iban\": \"IT60X0542811101000000123456\",\n  \"description\": \"Banca demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /companysettings/bank/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/bank/1"
+          }
+        },
+        {
+          "name": "PUT /companysettings/bank/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/bank/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated bank\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /companysettings/bank/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/bank/1"
           }
         },
         {
           "name": "GET /companysettings/bupnumerators",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/companysettings/bupnumerators?idDocumentType=1"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/bupnumerators"
           }
         },
         {
-          "name": "GET /companysettings/currencychange/{code}",
+          "name": "GET /companysettings/currencychange/{idSourceCurr}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companysettings/currencychange/EUR"
           }
         },
@@ -400,28 +647,43 @@
           "name": "GET /companysettings/taxs",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/companysettings/taxs?country=RO"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/companysettings/taxs"
           }
         },
         {
           "name": "GET /companysettings/taxs/{idVat}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/companysettings/taxs/TVA19"
           }
         }
       ]
     },
     {
-      "name": "Contacts (Task 6)",
+      "name": "Contacts",
       "item": [
         {
           "name": "GET /contacts",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/contacts"
           }
         },
@@ -430,93 +692,495 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/contacts",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"type\": \"COMPANY\",\n  \"name\": \"Test SRL\",\n  \"email\": \"test@local.com\",\n  \"city\": \"București\",\n  \"country\": \"RO\"\n}"
-            },
-            "url": "{{baseUrl}}/contacts"
+              "raw": "{\n  \"name\": \"Contact Demo\",\n  \"email\": \"contact@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /contacts/sources",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/sources"
           }
         },
         {
           "name": "GET /contacts/{idcontact}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/contacts/1"
+          }
+        },
+        {
+          "name": "PATCH /contacts/{idcontact}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"updated@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /contacts/{idcontact}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1"
+          }
+        },
+        {
+          "name": "PUT /contacts/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Contact Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /contacts/{id}/photo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/photo",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /contacts/{idcontact}/offices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/offices"
+          }
+        },
+        {
+          "name": "POST /contacts/{idcontact}/offices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/offices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sede\",\n  \"city\": \"Roma\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /contacts/{idcontact}/offices/{idoffice}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/offices/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sede Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /contacts/{idcontact}/offices/{idoffice}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/offices/1"
+          }
+        },
+        {
+          "name": "GET /contacts/{idcontact}/subcontacts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/subcontacts"
+          }
+        },
+        {
+          "name": "POST /contacts/{idcontact}/subcontacts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/subcontacts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"Sub\",\n  \"lastname\": \"Contact\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /contacts/{idcontact}/subcontacts/{idsubcontact}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/contacts/1/subcontacts/1"
           }
         }
       ]
     },
     {
-      "name": "Customers (Task 6)",
+      "name": "Customers",
       "item": [
         {
           "name": "GET /customers",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/customers"
           }
         },
         {
-          "name": "GET /customers/{id}",
+          "name": "POST /customers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/customers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00002\",\n  \"name\": \"Customer Demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /customers/{idcustomer}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/customers/C00001"
           }
         },
         {
-          "name": "GET /customers/{id}/report",
+          "name": "PUT /customers/{idcustomer}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/customers/C00001",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Customer Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH /customers/{idcustomer}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/customers/C00001",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Customer Patched\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /customers/{idcustomer}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/customers/C00001"
+          }
+        },
+        {
+          "name": "GET /customers/{idcustomer}/report",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/customers/C00001/report"
           }
         }
       ]
     },
     {
-      "name": "Vendors (Task 6)",
+      "name": "Vendors",
       "item": [
         {
           "name": "GET /vendors",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/vendors"
           }
         },
         {
-          "name": "GET /vendors/{id}/report",
+          "name": "POST /vendors",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/vendors",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idvendor\": \"V00002\",\n  \"name\": \"Vendor Demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /vendors/{idvendor}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/vendors/V00001"
+          }
+        },
+        {
+          "name": "PUT /vendors/{idvendor}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/vendors/V00001",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vendor Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH /vendors/{idvendor}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/vendors/V00001",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vendor Patched\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /vendors/{idvendor}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/vendors/V00001"
+          }
+        },
+        {
+          "name": "GET /vendors/{idvendor}/report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/vendors/V00001/report"
           }
         }
       ]
     },
     {
-      "name": "Product (Task 7)",
+      "name": "Products",
       "item": [
         {
           "name": "GET /products",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/products"
-          }
-        },
-        {
-          "name": "GET /products/{id}",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/products/M00001"
           }
         },
         {
@@ -524,146 +1188,889 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/products/product",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Prodotto test\",\n  \"um\": \"PZ\",\n  \"salesEnabled\": true,\n  \"salesPrice\": 25.5\n}"
-            },
-            "url": "{{baseUrl}}/products/product"
+              "raw": "{\n  \"idmaterial\": \"M00002\",\n  \"description\": \"Product demo\",\n  \"um\": \"PZ\"\n}"
+            }
           }
-        }
-      ]
-    },
-    {
-      "name": "ProductGroup (Task 7)",
-      "item": [
+        },
+        {
+          "name": "PUT /products/product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/products/product",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idmaterial\": \"M00001\",\n  \"description\": \"Product updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /products/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/products/1"
+          }
+        },
+        {
+          "name": "PUT /products/{id}/media",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/products/1/media",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileId\": \"media-1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /products/{id}/variants",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/products/1/variants"
+          }
+        },
+        {
+          "name": "PUT /products/variants",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/products/variants",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"variants\": []\n}"
+            }
+          }
+        },
         {
           "name": "GET /productsgroups",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/productsgroups"
           }
-        }
-      ]
-    },
-    {
-      "name": "Attribute (Task 7)",
-      "item": [
+        },
+        {
+          "name": "POST /productsgroups",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/productsgroups",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Group demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /productsgroups/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/productsgroups/1"
+          }
+        },
+        {
+          "name": "PUT /productsgroups/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/productsgroups/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Group updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /productsgroups/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/productsgroups/1"
+          }
+        },
+        {
+          "name": "GET /attributes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/attributes"
+          }
+        },
+        {
+          "name": "POST /attributes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attributes",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"code\": \"COLOR\",\n    \"description\": \"Colore\"\n  }\n]"
+            }
+          }
+        },
         {
           "name": "GET /attributes/productattributes",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/attributes/productattributes"
           }
-        }
-      ]
-    },
-    {
-      "name": "Pricelist (Task 7)",
-      "item": [
+        },
+        {
+          "name": "POST /attributes/productattributes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attributes/productattributes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idmaterial\": \"M00001\",\n  \"code\": \"COLOR\",\n  \"value\": \"Rosso\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /attributes/productattributes",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/attributes/productattributes",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"value\": \"Blu\"\n}"
+            }
+          }
+        },
         {
           "name": "GET /pricelists",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/pricelists"
+          }
+        },
+        {
+          "name": "POST /pricelists",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/pricelists",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Listino demo\"\n}"
+            }
           }
         },
         {
           "name": "GET /pricelists/schemes",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/pricelists/schemes"
+          }
+        },
+        {
+          "name": "GET /pricelists/schemes/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pricelists/schemes/1"
+          }
+        },
+        {
+          "name": "GET /pricelists/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pricelists/1"
+          }
+        },
+        {
+          "name": "PUT /pricelists/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/pricelists/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Listino updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /pricelists/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/pricelists/1"
           }
         }
       ]
     },
     {
-      "name": "Storage (Task 8)",
+      "name": "Warehouse",
       "item": [
         {
           "name": "GET /storages",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/storages"
+          }
+        },
+        {
+          "name": "POST /storages",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storages",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Magazzino demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /storages/{idStorage}/storageLocations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1/storageLocations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Location nested\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /storages/{idStorage}/storageLocations/{idLocation}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1/storageLocations/1"
+          }
+        },
+        {
+          "name": "PUT /storages/{idStorage}/storageLocations/{idLocation}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1/storageLocations/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Location updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /storages/{idStorage}/storageLocations/{idLocation}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1/storageLocations/1"
           }
         },
         {
           "name": "GET /storages/{id}",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/storages/MAG01"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1"
           }
-        }
-      ]
-    },
-    {
-      "name": "StorageLocation (Task 8)",
-      "item": [
+        },
+        {
+          "name": "PUT /storages/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Magazzino updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /storages/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storages/1"
+          }
+        },
         {
           "name": "GET /storageLocations",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/storageLocations"
           }
-        }
-      ]
-    },
-    {
-      "name": "Stock (Task 8)",
-      "item": [
+        },
+        {
+          "name": "POST /storageLocations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storageLocations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Location demo\",\n  \"idStorage\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /storageLocations/{idLocation}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storageLocations/1"
+          }
+        },
+        {
+          "name": "PUT /storageLocations/{idLocation}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/storageLocations/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Location updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /storageLocations/{idLocation}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/storageLocations/1"
+          }
+        },
+        {
+          "name": "GET /stocks/avaibility/report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/stocks/avaibility/report"
+          }
+        },
         {
           "name": "GET /stocks/avaibility",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/stocks/avaibility?idMaterial=M00001"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/stocks/avaibility"
           }
-        }
-      ]
-    },
-    {
-      "name": "Lot (Task 8)",
-      "item": [
+        },
+        {
+          "name": "POST /stocks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/stocks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idmaterial\": \"M00001\",\n  \"qty\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /stocks",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/stocks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idmaterial\": \"M00001\",\n  \"qty\": 15\n}"
+            }
+          }
+        },
         {
           "name": "GET /lots",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/lots"
           }
-        }
-      ]
-    },
-    {
-      "name": "MachineDataTracking (Task 8)",
-      "item": [
+        },
+        {
+          "name": "POST /lots",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lots",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idlot\": \"L00002\",\n  \"idmaterial\": \"M00001\",\n  \"description\": \"Lot demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /lots/{idLot}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/lots/L00001"
+          }
+        },
+        {
+          "name": "PUT /lots/{idLot}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/lots/L00001",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Lot updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /lots/{idlot}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/lots/L00001"
+          }
+        },
+        {
+          "name": "POST /machineDataTracking/list",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/machineDataTracking/list",
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"description\": \"Batch item\"\n  }\n]"
+            }
+          }
+        },
         {
           "name": "GET /machineDataTracking",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/machineDataTracking"
+          }
+        },
+        {
+          "name": "POST /machineDataTracking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/machineDataTracking",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Tracking demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /machineDataTracking/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/machineDataTracking/1"
+          }
+        },
+        {
+          "name": "PUT /machineDataTracking/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/machineDataTracking/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Tracking updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /machineDataTracking/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/machineDataTracking/1"
           }
         }
       ]
     },
     {
-      "name": "SaleDocument (Task 9)",
+      "name": "Sales",
       "item": [
         {
           "name": "GET /sales/offers",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/sales/offers"
           }
         },
@@ -672,50 +2079,955 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/sales/offers",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"idContact\": 1,\n  \"docCurrency\": \"EUR\",\n  \"rows\": [\n    {\n      \"idMaterial\": \"M00001\",\n      \"description\": \"Sample line\",\n      \"price\": 10,\n      \"quantity\": 2\n    }\n  ]\n}"
-            },
-            "url": "{{baseUrl}}/sales/offers"
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"lines\": []\n}"
+            }
           }
         },
         {
-          "name": "GET /sales/offers/{id}/pdf",
+          "name": "GET /sales/offers/{idDoc}/pdf",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/sales/offers/1/pdf"
+          }
+        },
+        {
+          "name": "GET /sales/orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/orders"
+          }
+        },
+        {
+          "name": "POST /sales/orders",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"lines\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/orders/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/orders/1/pdf"
+          }
+        },
+        {
+          "name": "GET /sales/goodsissue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/goodsissue"
+          }
+        },
+        {
+          "name": "POST /sales/goodsissue",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/goodsissue",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"lines\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/goodsissue/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/goodsissue/1/pdf"
+          }
+        },
+        {
+          "name": "POST /sales/goodissuestoinvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/goodissuestoinvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [\n    1\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/invoices"
+          }
+        },
+        {
+          "name": "POST /sales/invoices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/invoices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"lines\": []\n}"
+            }
           }
         },
         {
           "name": "GET /sales/invoices/openbalance",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/sales/invoices/openbalance"
+          }
+        },
+        {
+          "name": "GET /sales/invoices/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/invoices/1/pdf"
+          }
+        },
+        {
+          "name": "POST /sales/invoices/{idDoc}/einvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/invoices/1/einvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/invoices/{id}/payments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/invoices/1/payments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 50\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/tickets"
+          }
+        },
+        {
+          "name": "POST /sales/tickets",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/tickets",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"lines\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/writeoff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/writeoff",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/customerpayment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/customerpayment"
+          }
+        },
+        {
+          "name": "POST /sales/customerpayment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/customerpayment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idcustomer\": \"C00001\",\n  \"amount\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/customerpayment/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/customerpayment/1"
           }
         },
         {
           "name": "GET /sales/reports",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/sales/reports"
+          }
+        },
+        {
+          "name": "GET /sales/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/pdf"
+          }
+        },
+        {
+          "name": "GET /sales/{idDoc}/attachment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/attachment"
+          }
+        },
+        {
+          "name": "POST /sales/{idDoc}/attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/attachment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"multipart upload in real clients; send JSON stub or form-data as needed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{idDoc}/attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/attachment"
+          }
+        },
+        {
+          "name": "GET /sales/{idDoc}/customerpayment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/customerpayment"
+          }
+        },
+        {
+          "name": "GET /sales/{id}/offers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offers"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/offers",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/offers",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offers"
+          }
+        },
+        {
+          "name": "POST /sales/{id}/offerstogoodsissue",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offerstogoodsissue",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/{id}/offerstoinvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offerstoinvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/{id}/offerstoorder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/offerstoorder",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/{id}/orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orders"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/orders",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/orders",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orders"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/orderspayments",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orderspayments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payments\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/{id}/orderstogoodsissue",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orderstogoodsissue",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/{id}/orderstoinvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orderstoinvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "POST /sales/{id}/orderstoticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/orderstoticket",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/{id}/goodsissue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/goodsissue"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/goodsissue",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/goodsissue",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/goodsissue",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/goodsissue"
+          }
+        },
+        {
+          "name": "POST /sales/{id}/goodissuetoinvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/goodissuetoinvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/{id}/invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/invoices"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/invoices",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/invoices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/invoices",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/invoices"
+          }
+        },
+        {
+          "name": "POST /sales/{id}/invoicetocreditnote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/invoicetocreditnote",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "GET /sales/{id}/tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/tickets"
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/tickets",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/tickets",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/tickets",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/tickets"
+          }
+        },
+        {
+          "name": "POST /sales/{id}/tickettowriteoff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/tickettowriteoff",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/writeoff",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/writeoff",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /sales/{id}/customerpayment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/customerpayment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 120\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /sales/{id}/customerpayment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/sales/1/customerpayment"
           }
         }
       ]
     },
     {
-      "name": "PurchaseDocument (Task 10)",
+      "name": "Purchases",
       "item": [
         {
           "name": "GET /purchases/orders",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/purchases/orders"
           }
         },
@@ -724,42 +3036,460 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/purchases/orders",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"idVendor\": \"V00001\",\n  \"docCurrency\": \"RON\",\n  \"rows\": [\n    {\n      \"idMaterial\": \"M00001\",\n      \"description\": \"Materiale\",\n      \"price\": 8.5,\n      \"quantity\": 5\n    }\n  ]\n}"
-            },
-            "url": "{{baseUrl}}/purchases/orders"
+              "raw": "{\n  \"idvendor\": \"V00001\",\n  \"lines\": []\n}"
+            }
           }
         },
         {
-          "name": "GET /purchases/orders/{id}/pdf",
+          "name": "GET /purchases/orders/{idDoc}/pdf",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/purchases/orders/1/pdf"
+          }
+        },
+        {
+          "name": "GET /purchases/goodsreceipt",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/goodsreceipt"
+          }
+        },
+        {
+          "name": "POST /purchases/goodsreceipt",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/goodsreceipt",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idvendor\": \"V00001\",\n  \"lines\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /purchases/goodsreceipt/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/goodsreceipt/1/pdf"
+          }
+        },
+        {
+          "name": "POST /purchases/goodreceiptstoinvoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/goodreceiptstoinvoice",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ids\": [\n    1\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /purchases/invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/invoices"
+          }
+        },
+        {
+          "name": "POST /purchases/invoices",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/invoices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idvendor\": \"V00001\",\n  \"lines\": []\n}"
+            }
           }
         },
         {
           "name": "GET /purchases/invoices/openbalance",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/purchases/invoices/openbalance?idVendor=V00001"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/invoices/openbalance"
+          }
+        },
+        {
+          "name": "GET /purchases/invoices/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/invoices/1/pdf"
+          }
+        },
+        {
+          "name": "GET /purchases/vendorpayment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/vendorpayment"
+          }
+        },
+        {
+          "name": "POST /purchases/vendorpayment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/vendorpayment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idvendor\": \"V00001\",\n  \"amount\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /purchases/vendorpayment/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/vendorpayment/1"
+          }
+        },
+        {
+          "name": "GET /purchases/{idDoc}/pdf",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/pdf"
+          }
+        },
+        {
+          "name": "GET /purchases/{idDoc}/attachment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/attachment"
+          }
+        },
+        {
+          "name": "POST /purchases/{idDoc}/attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/attachment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"multipart upload in real clients; send JSON stub or form-data as needed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /purchases/{idDoc}/attachment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/attachment"
+          }
+        },
+        {
+          "name": "GET /purchases/{idDoc}/vendorpayment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/vendorpayment"
+          }
+        },
+        {
+          "name": "GET /purchases/{id}/orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/orders"
+          }
+        },
+        {
+          "name": "PUT /purchases/{id}/orders",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /purchases/{id}/goodsreceipt",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/goodsreceipt"
+          }
+        },
+        {
+          "name": "PUT /purchases/{id}/goodsreceipt",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/goodsreceipt",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /purchases/{id}/goodsreceipt",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/goodsreceipt"
+          }
+        },
+        {
+          "name": "GET /purchases/{id}/invoices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/invoices"
+          }
+        },
+        {
+          "name": "PUT /purchases/{id}/invoices",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/invoices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /purchases/{id}/invoices",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/invoices"
+          }
+        },
+        {
+          "name": "PUT /purchases/{id}/vendorpayment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/vendorpayment",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 120\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /purchases/{id}/vendorpayment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/purchases/1/vendorpayment"
           }
         }
       ]
     },
     {
-      "name": "Accounting (Task 11)",
+      "name": "Accounting",
       "item": [
         {
           "name": "GET /accounting/accountmovements",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/accounting/accountmovements"
           }
         },
@@ -768,26 +3498,92 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/accounting/accountmovements",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"bu\": \"U1\",\n  \"bup\": \"P1\",\n  \"description\": \"Movimento manuale\",\n  \"rows\": [\n    {\n      \"description\": \"Dare\",\n      \"accountCode\": \"5010\",\n      \"accountSign\": \"D\",\n      \"amount\": 50\n    },\n    {\n      \"description\": \"Avere\",\n      \"accountCode\": \"1010\",\n      \"accountSign\": \"A\",\n      \"amount\": 50\n    }\n  ]\n}"
-            },
-            "url": "{{baseUrl}}/accounting/accountmovements"
+              "raw": "{\n  \"description\": \"Movimento demo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /accounting/accountmovements",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/accounting/accountmovements",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"description\": \"Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /accounting/{idDoc}/accountmovements",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/accounting/1/accountmovements"
           }
         }
       ]
     },
     {
-      "name": "Crm (Task 12)",
+      "name": "CRM",
       "item": [
+        {
+          "name": "POST /crmaccounts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Opportunity demo\"\n}"
+            }
+          }
+        },
         {
           "name": "GET /crmaccounts/report",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/crmaccounts/report"
           }
         },
@@ -795,43 +3591,268 @@
           "name": "GET /crmaccounts/tasks",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/crmaccounts/tasks"
           }
         },
         {
-          "name": "GET /crmaccounts/{id}/activities",
+          "name": "GET /crmaccounts/{idcrmaccount}/report",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/report"
+          }
+        },
+        {
+          "name": "GET /crmaccounts/{idcrmaccount}/tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/tasks"
+          }
+        },
+        {
+          "name": "POST /crmaccounts/{idParent}/activities-attachments",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities-attachments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"multipart upload in real clients; send JSON stub or form-data as needed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /crmaccounts/{idParent}/activities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/crmaccounts/1/activities"
           }
         },
         {
-          "name": "POST /crmaccounts",
+          "name": "POST /crmaccounts/{idParent}/activities",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"idContact\": \"2\",\n  \"name\": \"Mario CRM\"\n}"
-            },
-            "url": "{{baseUrl}}/crmaccounts"
+              "raw": "{\n  \"description\": \"Activity demo\",\n  \"status\": \"OPEN\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /crmaccounts/{idParent}/activities/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities/1"
+          }
+        },
+        {
+          "name": "PUT /crmaccounts/{idParent}/activities/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Activity updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH /crmaccounts/{idParent}/activities/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DONE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /crmaccounts/{idParent}/activities/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/activities/1"
+          }
+        },
+        {
+          "name": "POST /crmaccounts/{idParent}/tasks",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/tasks",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Task demo\",\n  \"status\": \"OPEN\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT /crmaccounts/{idParent}/tasks/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/tasks/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Task updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH /crmaccounts/{idParent}/tasks/{id}",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/tasks/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"DONE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /crmaccounts/{idParent}/tasks/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1/tasks/1"
+          }
+        },
+        {
+          "name": "GET /crmaccounts/{idTask}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/crmaccounts/1"
           }
         }
       ]
     },
     {
-      "name": "Calendar (Task 13)",
+      "name": "Calendar",
       "item": [
         {
           "name": "GET /calendars",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/calendars"
           }
         },
@@ -839,7 +3860,12 @@
           "name": "GET /calendars/events",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/calendars/events"
           }
         },
@@ -848,26 +3874,84 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/calendars/events",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"event\": \"Demo meeting\",\n  \"place\": \"Office\",\n  \"idCalendar\": 1,\n  \"color\": \"#00AA00\",\n  \"privacy\": \"PUBLIC\",\n  \"startDate\": 1783269390998,\n  \"endDate\": 1783272990998\n}"
-            },
-            "url": "{{baseUrl}}/calendars/events"
+              "raw": "{\n  \"title\": \"Meeting\",\n  \"start\": \"2026-08-01T10:00:00Z\",\n  \"end\": \"2026-08-01T11:00:00Z\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /calendars/events/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/calendars/events/1"
+          }
+        },
+        {
+          "name": "PUT /calendars/events/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/calendars/events/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Meeting updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /calendars/events/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/calendars/events/1"
           }
         }
       ]
     },
     {
-      "name": "PersonalActivity (Task 13)",
+      "name": "PersonalActivity",
       "item": [
         {
           "name": "GET /personalactivities",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/personalactivities"
           }
         },
@@ -876,14 +3960,54 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/personalactivities",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Verificare stock\",\n  \"rootName\": \"Magazzino\",\n  \"status\": \"OPEN\"\n}"
-            },
-            "url": "{{baseUrl}}/personalactivities"
+              "raw": "{\n  \"description\": \"Activity\",\n  \"status\": \"OPEN\"\n}"
+            }
+          }
+        },
+        {
+          "name": "GET /personalactivities/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/personalactivities/1"
+          }
+        },
+        {
+          "name": "PUT /personalactivities/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/personalactivities/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated\"\n}"
+            }
           }
         },
         {
@@ -891,35 +4015,51 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/personalactivities/1",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"status\": \"COMPLETED\"\n}"
-            },
+            }
+          }
+        },
+        {
+          "name": "DELETE /personalactivities/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/personalactivities/1"
           }
         }
       ]
     },
     {
-      "name": "User (Task 15)",
+      "name": "Users",
       "item": [
         {
           "name": "GET /users",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
             "url": "{{baseUrl}}/users"
-          }
-        },
-        {
-          "name": "GET /users/agentcommission",
-          "request": {
-            "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/users/agentcommission?idUser=1"
           }
         },
         {
@@ -927,14 +4067,33 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/users",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"new.user\",\n  \"password\": \"password123\",\n  \"email\": \"new@example.com\",\n  \"firstname\": \"New\",\n  \"lastname\": \"User\",\n  \"active\": true\n}"
-            },
-            "url": "{{baseUrl}}/users"
+            }
+          }
+        },
+        {
+          "name": "GET /users/agentcommission",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/users/agentcommission"
           }
         },
         {
@@ -942,27 +4101,85 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/users/1/authprofiles",
             "body": {
               "mode": "raw",
-              "raw": "[\"ADMIN\", \"WAREHOUSE\"]"
-            },
-            "url": "{{baseUrl}}/users/1/authprofiles"
+              "raw": "[\n  \"ADMIN\",\n  \"WAREHOUSE\"\n]"
+            }
+          }
+        },
+        {
+          "name": "GET /users/{id}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/users/1"
+          }
+        },
+        {
+          "name": "PUT /users/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/users/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstname\": \"Updated\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /users/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/users/1"
           }
         }
       ]
     },
     {
-      "name": "Settings (Task 15)",
+      "name": "Settings",
       "item": [
         {
           "name": "GET /settings",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
-            "url": "{{baseUrl}}/settings?key1=APP"
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/settings"
           }
         },
         {
@@ -970,14 +4187,20 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
+            "url": "{{baseUrl}}/settings",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"key1\": \"APP\",\n  \"key2\": \"THEME\",\n  \"value\": \"dark\"\n}"
-            },
-            "url": "{{baseUrl}}/settings"
+            }
           }
         }
       ]

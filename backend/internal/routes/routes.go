@@ -1,11 +1,14 @@
 package routes
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"dnsc_microservice/internal/config"
 	"dnsc_microservice/internal/handlers"
 	"dnsc_microservice/internal/middleware"
+	"dnsc_microservice/internal/openapi"
 	"dnsc_microservice/internal/services"
 
 	"github.com/gorilla/mux"
@@ -311,6 +314,82 @@ func RegisterRoutes(appServices *services.AppServices, cfg *config.Config) http.
 	st := handlers.NewSettingsHandler(appServices.Settings)
 	api.HandleFunc("/settings", st.ListSettings).Methods(http.MethodGet)
 	api.HandleFunc("/settings", st.UpsertSetting).Methods(http.MethodPost)
+
+	msg := handlers.NewMessageHandler(appServices.Message)
+	api.HandleFunc("/messages", msg.ListMessages).Methods(http.MethodGet)
+	api.HandleFunc("/messages", msg.CreateMessage).Methods(http.MethodPost)
+	api.HandleFunc("/messages/contacts", msg.ListContacts).Methods(http.MethodGet)
+	api.HandleFunc("/messages/unread", msg.ListUnread).Methods(http.MethodGet)
+	api.HandleFunc("/messages/{idmessage}", msg.GetMessage).Methods(http.MethodGet)
+	api.HandleFunc("/messages/{id}", msg.MarkRead).Methods(http.MethodPut)
+	api.HandleFunc("/messagegroups", msg.ListGroups).Methods(http.MethodGet)
+	api.HandleFunc("/messagegroups/{id}", msg.DeleteGroup).Methods(http.MethodDelete)
+	api.HandleFunc("/messagegroups/{idGroup}", msg.MarkGroupRead).Methods(http.MethodPut)
+
+	lu := handlers.NewLoggedUserHandler(appServices.LoggedUser, appServices.Auth)
+	api.HandleFunc("/loggeduser", lu.Get).Methods(http.MethodGet)
+	api.HandleFunc("/loggeduser/changelanguage", lu.ChangeLanguage).Methods(http.MethodPost)
+	api.HandleFunc("/loggeduser/devicetoken", lu.AddDeviceToken).Methods(http.MethodPost)
+	api.HandleFunc("/loggeduser/devicetoken/{id}", lu.DeleteDeviceToken).Methods(http.MethodDelete)
+	api.HandleFunc("/loggeduser/image", lu.SetImage).Methods(http.MethodPost)
+	api.HandleFunc("/loggeduser/logout", lu.Logout).Methods(http.MethodPost)
+
+	nt := handlers.NewNotifyHandler(appServices.Notify)
+	api.HandleFunc("/ecommerce/notifies", nt.ListEcommerce).Methods(http.MethodGet)
+	api.HandleFunc("/ecommerce/notifies/unread", nt.UnreadEcommerce).Methods(http.MethodGet)
+	api.HandleFunc("/ecommerce/notifies/{id}", nt.GetEcommerce).Methods(http.MethodGet)
+	api.HandleFunc("/ecommerce/notifies/{id}", nt.MarkEcommerce).Methods(http.MethodPut)
+	api.HandleFunc("/social", nt.ListSocialPosts).Methods(http.MethodGet)
+	api.HandleFunc("/social/notifies", nt.ListSocialNotifies).Methods(http.MethodGet)
+	api.HandleFunc("/social/notifies/unread", nt.UnreadSocial).Methods(http.MethodGet)
+	api.HandleFunc("/social/notifies/{id}", nt.GetSocialNotify).Methods(http.MethodGet)
+	api.HandleFunc("/tasks/notifies", nt.ListTaskNotifies).Methods(http.MethodGet)
+	api.HandleFunc("/tasks/notifies/unread", nt.UnreadTask).Methods(http.MethodGet)
+	api.HandleFunc("/tasks/notifies/{id}", nt.GetTaskNotify).Methods(http.MethodGet)
+	api.HandleFunc("/emails", nt.ListEmails).Methods(http.MethodGet)
+	api.HandleFunc("/notifications", nt.ListGlobalNotifications).Methods(http.MethodGet)
+	api.HandleFunc("/plugins/bindcommerce/updatestock", nt.BindCommerceUpdateStock).Methods(http.MethodPost)
+	api.HandleFunc("/tilby/sales", nt.TilbySales).Methods(http.MethodPost)
+
+	swaggerPath := os.Getenv("SWAGGER_PATH")
+	if swaggerPath == "" {
+		for _, candidate := range []string{"../swagger.json", "swagger.json", "/root/swagger.json"} {
+			if _, err := os.Stat(candidate); err == nil {
+				swaggerPath = candidate
+				break
+			}
+		}
+	}
+	spec, err := openapi.Generate(router, swaggerPath)
+	if err != nil {
+		log.Printf("openapi: generate failed: %v", err)
+	} else {
+		// Document the explorer endpoint itself (registered after Walk).
+		if spec.Paths["/api/openapi.json"] == nil {
+			spec.Paths["/api/openapi.json"] = openapi.PathItem{}
+		}
+		spec.Paths["/api/openapi.json"]["get"] = &openapi.Operation{
+			Tags:        []string{"OpenAPI"},
+			Summary:     "Get OpenAPI specification",
+			Description: "Live OpenAPI document generated from registered mux routes.\n\n**Authentication:** not required (public).",
+			OperationID: "get_api_openapi_json",
+			Security:    []map[string][]string{},
+			Responses: map[string]openapi.Response{
+				"200": {Description: "OpenAPI 3 JSON"},
+			},
+		}
+		found := false
+		for _, t := range spec.Tags {
+			if t.Name == "OpenAPI" {
+				found = true
+				break
+			}
+		}
+		if !found {
+			spec.Tags = append(spec.Tags, openapi.Tag{Name: "OpenAPI", Description: "Live OpenAPI document for this explorer"})
+		}
+		api.HandleFunc("/openapi.json", openapi.Handler(spec)).Methods(http.MethodGet)
+	}
 
 	withAuth := middleware.AuthMiddleware(appServices.Auth)(router)
 	return middleware.CorsMiddleware(cfg.CORSOriginsList())(withAuth)

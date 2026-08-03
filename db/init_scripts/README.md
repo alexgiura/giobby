@@ -7,7 +7,7 @@ Fișierele din acest folder rulează **în ordine alfabetică** la primul start 
 | Swagger tag | Fișier SQL |
 |-------------|------------|
 | *(extensions)* | `000_extensions.sql` |
-| User | `010_user.sql` |
+| User (auth) | `010_user.sql` |
 | Country | `020_country.sql` |
 | Currency | `030_currency.sql` |
 | City | `040_city.sql` |
@@ -35,31 +35,18 @@ Fișierele din acest folder rulează **în ordine alfabetică** la primul start 
 | Crm | `260_crm.sql` |
 | Calendar | `270_calendar.sql` |
 | PersonalActivity | `280_personalactivity.sql` |
-| User | `290_user_management.sql` |
+| User (company) | `290_user_management.sql` |
 | Settings | `300_settings.sql` |
+| Message / MessageGroups | `310_messaging.sql` |
+| LoggedUser | `320_loggeduser.sql` |
+| Ecommerce / Social / Task notifies, Email, GlobalNotification | `330_notifies.sql` |
+| Plugin / Tilby | `340_integrations.sql` |
 
-## Viitoare (Task 16+)
-
-La implementare, adaugă fișier nou cu prefix după ultimul existent:
+## Viitoare
 
 | Swagger tag | Task |
 |-------------|------|
-| LoggedUser | 3 (revizuit) |
-| Crm | — |
-| PuchaseDocument | — |
-| Accounting | — |
-| Calendar | — |
-| Ecommerce | — |
-| Email | — |
-| GlobalNotification | — |
-| Message / MessageGroups | — |
-| PersonalActivity | — |
-| Plugin | — |
 | RepoFile / RepoMedia | 16 |
-| Settings | — |
-| Social | — |
-| Task | 12 (parțial) |
-| Tilby Sales | — |
 
 ## Reset după modificări schema
 
