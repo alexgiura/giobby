@@ -66,6 +66,8 @@ jobs:
         run: docker build -t giobby-api-explorer:ci ./api-explorer
       - name: Check production compose
         run: scripts/check-prod-compose.sh
+      - name: Test branch guard filter
+        run: scripts/test-branch-guard.sh
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
