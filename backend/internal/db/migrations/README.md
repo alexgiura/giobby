@@ -1,6 +1,8 @@
-# Init scripts — mapare domenii Swagger
+# Migrații — mapare domenii Swagger
 
-Fișierele din acest folder rulează **în ordine alfabetică** la primul start Postgres (`docker-entrypoint-initdb.d`). Prefixul numeric (`010_`, `020_`, …) respectă dependențele FK.
+Fișierele din acest folder sunt incluse în binar și aplicate de `cmd/migrate` (serviciul `migrate` din Docker Compose) la fiecare deploy, înainte de backend. Prefixul numeric (`010_`, `020_`, …) este versiunea și respectă dependențele FK. Versiunile aplicate sunt înregistrate în `schema_migrations` cu checksum SHA-256.
+
+**Reguli:** nu se modifică niciodată un fișier deja aplicat (`migrate` se oprește cu `migration checksum mismatch`); o schimbare de schemă = un fișier nou cu prefix mai mare decât ultimul.
 
 ## Implementate
 
@@ -48,7 +50,7 @@ Fișierele din acest folder rulează **în ordine alfabetică** la primul start 
 |-------------|------|
 | RepoFile / RepoMedia | 16 |
 
-## Reset după modificări schema
+## Reset bază de date locală
 
 ```bash
 docker compose down -v
