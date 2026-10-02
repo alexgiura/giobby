@@ -35,4 +35,13 @@ upstream=$(echo "$json" | jq -r '.services["api-explorer"].environment.BACKEND_H
 [ "$upstream" != "backend" ] || fail "api-explorer proxies to the generic name 'backend'"
 echo "$json" | jq -e --arg s "$upstream" '.services | has($s)' >/dev/null || fail "BACKEND_HOST $upstream is not a service of this file"
 
+# Coolify stores the text after ${VAR:?...} as the variable's value ("missing JWT_SECRET"),
+# which defeats the check: required variables must use the bare ${VAR:?} form.
+if grep -nE '\$\{[A-Z_]+:\?[^}]' "$FILE"; then fail "use \${VAR:?} without a message (Coolify turns the message into the value)"; fi
+
+# Every long-running service needs a healthcheck, or Coolify reports the resource as unknown.
+for svc in $(echo "$json" | jq -r '.services | to_entries[] | select(.value.restart != "no") | .key'); do
+  echo "$json" | jq -e --arg s "$svc" '.services[$s].healthcheck.test' >/dev/null || fail "service $svc has no healthcheck"
+done
+
 echo "prod compose OK"

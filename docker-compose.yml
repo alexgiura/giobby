@@ -4,14 +4,15 @@
 services:
 
   db:
-    image: postgres:17.11-alpine
+    image: postgres:18.6-alpine
     container_name: giobby_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: dev-postgres-password
     volumes:
-      - giobby_pgdata:/var/lib/postgresql/data
+      # PostgreSQL 18 images keep data under /var/lib/postgresql/18/docker: mount the parent.
+      - giobby_pg18:/var/lib/postgresql
       - ./dev/postgres-init:/docker-entrypoint-initdb.d:ro
     ports:
       - "127.0.0.1:5432:5432"
@@ -77,12 +78,18 @@ services:
         condition: service_healthy
     ports:
       - "127.0.0.1:3000:80"
+    # Static page only: the explorer is healthy even if the backend restarts.
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - app
 
 volumes:
-  giobby_pgdata:
-    name: giobby_pgdata
+  giobby_pg18:
+    name: giobby_pg18
 
 networks:
   app:
