@@ -20,7 +20,9 @@ feat/… ──PR──▶ dev ──PR──▶ main ──CI verde──▶ re
 - A ogni deploy Coolify ricostruisce le immagini e avvia, in ordine:
   1. **`migrate`**: applica le migrazioni pendenti (`backend/internal/db/migrations/`) come `giobby`
      e riassegna i permessi a `giobby_app`; poi esce;
-  2. **`backend`**: parte solo se `migrate` è uscito con 0; usa `giobby_app` (solo dati, niente DDL);
+  2. **`giobby-backend`**: parte solo se `migrate` è uscito con 0; usa `giobby_app` (solo dati, niente DDL).
+     Il nome è volutamente specifico: sulla rete condivisa di Coolify un nome generico come `backend`
+     potrebbe risolvere al container di un altro stack;
   3. **`api-explorer`**: parte quando il backend è `healthy`; espone UI e proxy `/api/`, `/health`,
      `/healthz` su `10.8.0.1:2001`.
 
@@ -127,7 +129,10 @@ curl -s -o /dev/null -w "%{http_code}\n" http://giobby.cloud4job.com:2001/api/at
 ```
 
 - Log di `migrate`: `Applied N migration(s).` e `Database schema is current.`
-- Log di `backend`: `Successfully connected to PostgreSQL`, `starting HTTP server`.
+- Log di `giobby-backend`: `Successfully connected to PostgreSQL`, `starting HTTP server`.
+- Il proxy dell'API Explorer arriva al backend di giobby e a nessun altro: sul server
+  `docker exec <container api-explorer> getent hosts giobby-backend` deve dare **un solo** IP, quello
+  del container `giobby-backend` della risorsa (`docker inspect` → `NetworkSettings.Networks`).
 - `http://giobby.cloud4job.com:2001/` apre l'API Explorer.
 - Redeploy senza modifiche: `migrate` scrive `Applied 0 migration(s).`
 - Restart della risorsa da Coolify: torna `healthy`.

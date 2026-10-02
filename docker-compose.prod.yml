@@ -36,7 +36,10 @@ services:
       MIGRATION_APP_ROLE: ${MIGRATION_APP_ROLE:?missing MIGRATION_APP_ROLE}
     logging: *logging
 
-  backend:
+  # Named giobby-backend, not backend: with "Connect To Predefined Network" the
+  # services share Coolify's network with other stacks, where a generic name could
+  # resolve to someone else's container.
+  giobby-backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -73,8 +76,10 @@ services:
     build: ./api-explorer
     restart: unless-stopped
     depends_on:
-      backend:
+      giobby-backend:
         condition: service_healthy
+    environment:
+      BACKEND_HOST: giobby-backend
     ports:
       - "10.8.0.1:2001:80"
     logging: *logging

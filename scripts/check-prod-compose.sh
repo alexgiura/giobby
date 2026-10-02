@@ -28,4 +28,11 @@ echo "$json" | jq -e '(.volumes // {}) | length == 0' >/dev/null || fail "volume
 ports=$(echo "$json" | jq -c '[.services[] | (.ports // [])[] | {host_ip, published, target}]')
 [ "$ports" = '[{"host_ip":"10.8.0.1","published":"2001","target":80}]' ] || fail "published ports: $ports"
 
+# On Coolify's shared network a generic name like "backend" can resolve to another
+# stack's container: the explorer must proxy to a giobby-specific service name.
+upstream=$(echo "$json" | jq -r '.services["api-explorer"].environment.BACKEND_HOST // empty')
+[ -n "$upstream" ] || fail "api-explorer has no BACKEND_HOST"
+[ "$upstream" != "backend" ] || fail "api-explorer proxies to the generic name 'backend'"
+echo "$json" | jq -e --arg s "$upstream" '.services | has($s)' >/dev/null || fail "BACKEND_HOST $upstream is not a service of this file"
+
 echo "prod compose OK"
