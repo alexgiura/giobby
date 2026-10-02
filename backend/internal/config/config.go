@@ -46,6 +46,28 @@ type Config struct {
 	CORSAllowedOrigins    string `env:"CORS_ALLOWED_ORIGINS" envDefault:"http://localhost:5173,http://127.0.0.1:5173"`
 }
 
+// minJWTSecretLength: generated secrets are 64 hex characters (openssl rand -hex 32);
+// anything under 32 characters is treated as a mistake.
+const minJWTSecretLength = 32
+
+// validate rejects settings that must never reach production. A deploy platform can
+// fill a missing variable with a placeholder (Coolify turned `${JWT_SECRET:?missing
+// JWT_SECRET}` into the value "missing JWT_SECRET"): the API must refuse to start
+// rather than sign tokens with a known secret. The error never includes the secret.
+func (cfg *Config) validate() error {
+	if cfg.AppSettings.Environment != "production" {
+		return nil
+	}
+	secret := strings.TrimSpace(cfg.JWTSecret)
+	switch {
+	case secret == "dev-jwt-secret-change-me", strings.HasPrefix(strings.ToLower(secret), "missing"):
+		return fmt.Errorf("invalid config: JWT_SECRET is a default or placeholder value in production")
+	case len(secret) < minJWTSecretLength:
+		return fmt.Errorf("invalid config: JWT_SECRET must be at least %d characters in production", minJWTSecretLength)
+	}
+	return nil
+}
+
 // ConnectPostgreSQL connects to PostgreSQL database and returns a connection pool
 func ConnectPostgreSQL(ctx context.Context, cfg *Config) (*pgxpool.Pool, error) {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -127,6 +149,9 @@ func Load() (*Config, error) {
 	// Basic validation for required app settings
 	if cfg.AppSettings.ServerPort == "" {
 		return nil, fmt.Errorf("invalid config: SERVER_PORT must not be empty")
+	}
+	if err := cfg.validate(); err != nil {
+		return nil, err
 	}
 
 	// Single effective timezone: TZ (container/host) wins over APP_TIMEZONE so logs, process, and DB session match.
