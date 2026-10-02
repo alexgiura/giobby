@@ -6,32 +6,32 @@ import (
 
 // Repository holds all repository interfaces.
 type Repository struct {
-	Auth                 AuthRepository
-	Reference            ReferenceRepository
-	Company              CompanyRepository
-	Contact              ContactRepository
-	Customer             CustomerRepository
-	Vendor               VendorRepository
-	Product              ProductRepository
-	ProductGroup         ProductGroupRepository
-	Attribute            AttributeRepository
-	Pricelist            PricelistRepository
-	Storage              StorageRepository
-	StorageLocation      StorageLocationRepository
-	Stock                StockRepository
-	Lot                  LotRepository
-	MachineDataTracking  MachineDataTrackingRepository
-	SaleDocument         SaleDocumentRepository
-	PurchaseDocument     PurchaseDocumentRepository
-	Accounting           AccountingRepository
-	Crm                  CrmRepository
-	Calendar             CalendarRepository
-	PersonalActivity     PersonalActivityRepository
-	User                 UserRepository
-	Settings             SettingsRepository
-	Message              MessageRepository
-	LoggedUser           LoggedUserRepository
-	Notify               NotifyRepository
+	Auth                AuthRepository
+	Reference           ReferenceRepository
+	Company             CompanyRepository
+	Contact             ContactRepository
+	Customer            CustomerRepository
+	Vendor              VendorRepository
+	Product             ProductRepository
+	ProductGroup        ProductGroupRepository
+	Attribute           AttributeRepository
+	Pricelist           PricelistRepository
+	Storage             StorageRepository
+	StorageLocation     StorageLocationRepository
+	Stock               StockRepository
+	Lot                 LotRepository
+	MachineDataTracking MachineDataTrackingRepository
+	SaleDocument        SaleDocumentRepository
+	PurchaseDocument    PurchaseDocumentRepository
+	Accounting          AccountingRepository
+	Crm                 CrmRepository
+	Calendar            CalendarRepository
+	PersonalActivity    PersonalActivityRepository
+	User                UserRepository
+	Settings            SettingsRepository
+	Message             MessageRepository
+	LoggedUser          LoggedUserRepository
+	Notify              NotifyRepository
 }
 
 // NewRepository initializes all repositories.

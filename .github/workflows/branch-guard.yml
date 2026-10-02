@@ -1,0 +1,52 @@
+name: Guardia branch
+
+# GitHub Free cannot protect branches on private repositories. This check flags
+# (in red, notifying whoever pushed) every push to dev or main whose commit is not
+# the merge commit of a pull request merged into that branch (.github/branch-guard.jq),
+# and every manual push to release: release is moved only by the CI with
+# GITHUB_TOKEN, whose pushes never trigger workflows.
+
+on:
+  push:
+    branches: [dev, main, release]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: release si aggiorna solo dalla CI
+        if: github.ref == 'refs/heads/release'
+        env:
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          echo "::error::Push manuale su release ($SHA, da $ACTOR). release si aggiorna solo dalla CI dopo una CI verde su main."
+          exit 1
+      - uses: actions/checkout@v4
+        if: github.ref != 'refs/heads/release'
+        with:
+          sparse-checkout: .github
+      - name: Il commit è il merge di una pull request in questo branch?
+        if: github.ref != 'refs/heads/release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          for _ in 1 2 3; do
+            merged=$(gh api "repos/$REPO/commits/$SHA/pulls" | jq --arg branch "$BRANCH" --arg sha "$SHA" -f .github/branch-guard.jq)
+            if [ "$merged" -gt 0 ]; then
+              echo "Commit $SHA è il merge di una pull request in $BRANCH."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Push diretto su $BRANCH ($SHA, da $ACTOR) senza pull request. Vedi .github/CONTRIBUTING.md."
+          exit 1

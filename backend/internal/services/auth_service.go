@@ -28,10 +28,10 @@ type AuthService interface {
 }
 
 type authService struct {
-	repo        repository.AuthRepository
-	jwtSecret   string
-	accessTTL   time.Duration
-	refreshTTL  time.Duration
+	repo       repository.AuthRepository
+	jwtSecret  string
+	accessTTL  time.Duration
+	refreshTTL time.Duration
 }
 
 // NewAuthService creates local OAuth-style auth service.

@@ -19,7 +19,9 @@ type LoggedUserService interface {
 	DeleteDeviceToken(ctx context.Context, userID uuid.UUID, id int64) error
 }
 
-type loggedUserService struct{ repo repository.LoggedUserRepository }
+type loggedUserService struct {
+	repo repository.LoggedUserRepository
+}
 
 func NewLoggedUserService(repo repository.LoggedUserRepository) LoggedUserService {
 	return &loggedUserService{repo: repo}

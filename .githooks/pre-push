@@ -1,0 +1,14 @@
+#!/bin/sh
+# Blocks direct pushes to dev, main and release: dev and main change only through
+# pull requests, release only through the CI after a green run on main.
+# Enable once per clone: git config core.hooksPath .githooks
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main | refs/heads/dev | refs/heads/release)
+      branch=${remote_ref#refs/heads/}
+      echo "Push diretto su $branch bloccato: pusha un branch e apri una pull request (vedi .github/CONTRIBUTING.md)." >&2
+      exit 1
+      ;;
+  esac
+done
+exit 0

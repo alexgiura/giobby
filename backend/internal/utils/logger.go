@@ -44,16 +44,16 @@ type LogLevelUpdate struct {
 
 // Logger is the main logger instance
 type Logger struct {
-	mu       sync.RWMutex
-	entries  []LogEntry
-	maxSize  int
-	level    LogLevel
-	service  string
+	mu      sync.RWMutex
+	entries []LogEntry
+	maxSize int
+	level   LogLevel
+	service string
 }
 
 var (
 	defaultLogger *Logger
-	once         sync.Once
+	once          sync.Once
 )
 
 // GetLogger returns the default logger instance
@@ -87,7 +87,7 @@ func (l *Logger) GetLevel() LogLevel {
 func (l *Logger) shouldLog(level LogLevel) bool {
 	l.mu.RLock()
 	defer l.mu.RUnlock()
-	
+
 	switch l.level {
 	case DEBUG:
 		return true
@@ -106,10 +106,10 @@ func (l *Logger) shouldLog(level LogLevel) bool {
 func (l *Logger) addEntry(entry LogEntry) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	
+
 	// Add new entry
 	l.entries = append(l.entries, entry)
-	
+
 	// Remove oldest entries if we exceed maxSize
 	if len(l.entries) > l.maxSize {
 		l.entries = l.entries[len(l.entries)-l.maxSize:]
@@ -181,11 +181,11 @@ func (l *Logger) GetLogs(limit int, from, to *time.Time, search string, status *
 
 // contains checks if a string contains a substring (case-insensitive)
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || 
-		(len(s) > len(substr) && 
-			(s[:len(substr)] == substr || 
-			 s[len(s)-len(substr):] == substr ||
-			 containsSubstring(s, substr))))
+	return len(s) >= len(substr) && (s == substr ||
+		(len(s) > len(substr) &&
+			(s[:len(substr)] == substr ||
+				s[len(s)-len(substr):] == substr ||
+				containsSubstring(s, substr))))
 }
 
 func containsSubstring(s, substr string) bool {

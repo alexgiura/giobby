@@ -4,19 +4,19 @@ import "time"
 
 // Message maps messages table (Giobby MessageApi).
 type Message struct {
-	ID               int64      `json:"id"`
-	IDGroup          *int64     `json:"idGroup,omitempty"`
-	Unread           bool       `json:"unread"`
-	SentDate         time.Time  `json:"sentDate"`
-	Body             string     `json:"body"`
-	UserFrom         *string    `json:"userFrom,omitempty"`
-	UserFromFullName *string    `json:"userFromFullName,omitempty"`
-	UserToFullName   *string    `json:"userToFullName,omitempty"`
-	IDTransaction    *int32     `json:"idTransaction,omitempty"`
-	IDChannel        *string    `json:"idChannel,omitempty"`
-	CompanyTo        *int32     `json:"companyTo,omitempty"`
-	UsersTo          []string   `json:"usersTo,omitempty"`
-	SentMsg          bool       `json:"sentMsg"`
+	ID               int64     `json:"id"`
+	IDGroup          *int64    `json:"idGroup,omitempty"`
+	Unread           bool      `json:"unread"`
+	SentDate         time.Time `json:"sentDate"`
+	Body             string    `json:"body"`
+	UserFrom         *string   `json:"userFrom,omitempty"`
+	UserFromFullName *string   `json:"userFromFullName,omitempty"`
+	UserToFullName   *string   `json:"userToFullName,omitempty"`
+	IDTransaction    *int32    `json:"idTransaction,omitempty"`
+	IDChannel        *string   `json:"idChannel,omitempty"`
+	CompanyTo        *int32    `json:"companyTo,omitempty"`
+	UsersTo          []string  `json:"usersTo,omitempty"`
+	SentMsg          bool      `json:"sentMsg"`
 }
 
 // MessageListQuery filters GET /messages.

@@ -4,40 +4,40 @@ import "time"
 
 // Sale document kinds (swagger paths).
 const (
-	SaleDocOffer       = "offer"
-	SaleDocOrder       = "order"
-	SaleDocGoodsIssue  = "goodsissue"
-	SaleDocInvoice     = "invoice"
-	SaleDocTicket      = "ticket"
-	SaleDocWriteoff    = "writeoff"
+	SaleDocOffer      = "offer"
+	SaleDocOrder      = "order"
+	SaleDocGoodsIssue = "goodsissue"
+	SaleDocInvoice    = "invoice"
+	SaleDocTicket     = "ticket"
+	SaleDocWriteoff   = "writeoff"
 )
 
 // DocumentRow matches swagger DocumentRowApi (+ idPos from DB).
 type DocumentRow struct {
-	IDPos                    int32   `json:"idPos,omitempty"`
-	IDMaterial               string  `json:"idMaterial,omitempty"`
-	IDAttributeCombination   int32   `json:"idAttributeCombination,omitempty"`
-	IDPosType                int32   `json:"idPosType,omitempty"`
-	Description              string  `json:"description,omitempty"`
-	Price                    float64 `json:"price,omitempty"`
-	Quantity                 float64 `json:"quantity,omitempty"`
-	Packages                 int32   `json:"packages,omitempty"`
-	Dsc1                     float64 `json:"dsc1,omitempty"`
-	Dsc2                     float64 `json:"dsc2,omitempty"`
-	Dsc3                     float64 `json:"dsc3,omitempty"`
-	Dsc4                     float64 `json:"dsc4,omitempty"`
-	IDVat                    string  `json:"idVat,omitempty"`
-	Um                       string  `json:"um,omitempty"`
+	IDPos                  int32   `json:"idPos,omitempty"`
+	IDMaterial             string  `json:"idMaterial,omitempty"`
+	IDAttributeCombination int32   `json:"idAttributeCombination,omitempty"`
+	IDPosType              int32   `json:"idPosType,omitempty"`
+	Description            string  `json:"description,omitempty"`
+	Price                  float64 `json:"price,omitempty"`
+	Quantity               float64 `json:"quantity,omitempty"`
+	Packages               int32   `json:"packages,omitempty"`
+	Dsc1                   float64 `json:"dsc1,omitempty"`
+	Dsc2                   float64 `json:"dsc2,omitempty"`
+	Dsc3                   float64 `json:"dsc3,omitempty"`
+	Dsc4                   float64 `json:"dsc4,omitempty"`
+	IDVat                  string  `json:"idVat,omitempty"`
+	Um                     string  `json:"um,omitempty"`
 }
 
 // DocumentPaymentRow matches swagger DocumentPaymentRowApi.
 type DocumentPaymentRow struct {
-	RateNumber int32   `json:"rateNumber,omitempty"`
-	PaidAmount float64 `json:"paidAmount,omitempty"`
-	Date       *int64  `json:"date,omitempty"`
-	Description string `json:"description,omitempty"`
-	Amount     float64 `json:"amount,omitempty"`
-	PaymentDate *int64 `json:"paymentDate,omitempty"`
+	RateNumber  int32   `json:"rateNumber,omitempty"`
+	PaidAmount  float64 `json:"paidAmount,omitempty"`
+	Date        *int64  `json:"date,omitempty"`
+	Description string  `json:"description,omitempty"`
+	Amount      float64 `json:"amount,omitempty"`
+	PaymentDate *int64  `json:"paymentDate,omitempty"`
 }
 
 // Document matches swagger DocumentApi (+ id, docNumber).
@@ -78,9 +78,9 @@ type SaleDocumentListQuery struct {
 }
 
 type DocumentListTransformation struct {
-	IDNumerator   int32  `json:"idNumerator,omitempty"`
-	DocNumber     string `json:"docNumber,omitempty"`
-	DocDate       *int64 `json:"docDate,omitempty"`
+	IDNumerator    int32  `json:"idNumerator,omitempty"`
+	DocNumber      string `json:"docNumber,omitempty"`
+	DocDate        *int64 `json:"docDate,omitempty"`
 	IDDocumentList string `json:"idDocumentList,omitempty"`
 }
 
@@ -114,13 +114,13 @@ type CustomerPayment struct {
 }
 
 type OpenBalanceRow struct {
-	IDCustomer   string  `json:"idCustomer,omitempty"`
-	IDDocument   int32   `json:"idDocument,omitempty"`
-	DocNumber    string  `json:"docNumber,omitempty"`
-	Amount       float64 `json:"amount,omitempty"`
-	PaidAmount   float64 `json:"paidAmount,omitempty"`
-	Remaining    float64 `json:"remaining,omitempty"`
-	PaymentStatus string `json:"paymentStatus,omitempty"`
+	IDCustomer    string  `json:"idCustomer,omitempty"`
+	IDDocument    int32   `json:"idDocument,omitempty"`
+	DocNumber     string  `json:"docNumber,omitempty"`
+	Amount        float64 `json:"amount,omitempty"`
+	PaidAmount    float64 `json:"paidAmount,omitempty"`
+	Remaining     float64 `json:"remaining,omitempty"`
+	PaymentStatus string  `json:"paymentStatus,omitempty"`
 }
 
 type SaleDocumentAttachment struct {

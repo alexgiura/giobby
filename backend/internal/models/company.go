@@ -54,25 +54,25 @@ type CurrencyChange struct {
 
 // VatRate VAT configuration per business unit.
 type VatRate struct {
-	IDVat        string   `json:"idVat"`
-	IDBu         *string  `json:"idBu,omitempty"`
-	Country      *string  `json:"country,omitempty"`
-	State        *string  `json:"state,omitempty"`
-	ContactType  *string  `json:"contactType,omitempty"`
-	TaxSuperType *int32   `json:"taxSuperType,omitempty"`
-	Rate         float64  `json:"rate"`
-	Description  *string  `json:"description,omitempty"`
+	IDVat        string  `json:"idVat"`
+	IDBu         *string `json:"idBu,omitempty"`
+	Country      *string `json:"country,omitempty"`
+	State        *string `json:"state,omitempty"`
+	ContactType  *string `json:"contactType,omitempty"`
+	TaxSuperType *int32  `json:"taxSuperType,omitempty"`
+	Rate         float64 `json:"rate"`
+	Description  *string `json:"description,omitempty"`
 }
 
 // BupNumerator BU/BUP/numerator row.
 type BupNumerator struct {
-	IDBu          string `json:"idBu"`
-	BuName        string `json:"buName"`
-	IDBup         string `json:"idBup"`
-	BupName       string `json:"bupName"`
-	IDNumerator   int32  `json:"idNumerator"`
+	IDBu           string `json:"idBu"`
+	BuName         string `json:"buName"`
+	IDBup          string `json:"idBup"`
+	BupName        string `json:"bupName"`
+	IDNumerator    int32  `json:"idNumerator"`
 	IDDocumentType *int32 `json:"idDocumentType,omitempty"`
-	Numerator     int32  `json:"numerator"`
+	Numerator      int32  `json:"numerator"`
 }
 
 type AccountCenterListQuery struct {
@@ -89,13 +89,13 @@ type AccountCodeListQuery struct {
 
 type BankListQuery struct {
 	ListQuery
-	IsCashdesk   *bool
-	AccountCode  string
-	Iban         string
-	Sia          string
-	Swift        string
-	Cuc          string
-	ShowDeleted  bool
+	IsCashdesk  *bool
+	AccountCode string
+	Iban        string
+	Sia         string
+	Swift       string
+	Cuc         string
+	ShowDeleted bool
 }
 
 type VatListQuery struct {

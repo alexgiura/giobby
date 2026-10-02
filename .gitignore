@@ -1,2 +1,6 @@
 .claude/
 DOCUMENTATION.MD
+
+# Local secrets
+.env
+backend/.env

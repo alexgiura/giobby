@@ -2,15 +2,15 @@ package models
 
 // Pricelist matches swagger PricelistApi.
 type Pricelist struct {
-	ID                int32   `json:"id,omitempty"`
-	IDPricelistScheme *int32  `json:"idPricelistScheme,omitempty"`
-	Description       string  `json:"description,omitempty"`
-	Type              string  `json:"type,omitempty"`
-	Note              string  `json:"note,omitempty"`
-	ValidSince        *int64  `json:"validSince,omitempty"`
-	ValidUntil        *int64  `json:"validUntil,omitempty"`
-	Priority          int32   `json:"priority,omitempty"`
-	SourceID          string  `json:"sourceId,omitempty"`
+	ID                int32  `json:"id,omitempty"`
+	IDPricelistScheme *int32 `json:"idPricelistScheme,omitempty"`
+	Description       string `json:"description,omitempty"`
+	Type              string `json:"type,omitempty"`
+	Note              string `json:"note,omitempty"`
+	ValidSince        *int64 `json:"validSince,omitempty"`
+	ValidUntil        *int64 `json:"validUntil,omitempty"`
+	Priority          int32  `json:"priority,omitempty"`
+	SourceID          string `json:"sourceId,omitempty"`
 }
 
 // PricelistScheme is a pricelist schema header.

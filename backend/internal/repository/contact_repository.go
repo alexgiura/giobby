@@ -71,8 +71,6 @@ var contactPatchColumns = map[string]string{
 	"note":           "note",
 }
 
-
-
 func (r *contactRepository) ListContacts(ctx context.Context, q models.ContactListQuery) ([]models.Contact, error) {
 	sql := `SELECT ` + contactSelectCols
 	args := []any{}
@@ -508,4 +506,3 @@ func scanOfficeFromScanner(s interface{ Scan(...any) error }) (*models.ContactOf
 	}
 	return &o, nil
 }
-

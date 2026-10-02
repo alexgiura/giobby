@@ -24,15 +24,15 @@ type Currency struct {
 
 // Um matches swagger UmApi.
 type Um struct {
-	DescriptionIT       string `json:"description_IT,omitempty"`
-	DescriptionEN       string `json:"description_EN,omitempty"`
-	DescriptionES       string `json:"description_ES,omitempty"`
-	DescriptionBG       string `json:"description_BG,omitempty"`
-	ShortDescriptionIT  string `json:"shortDescription_IT,omitempty"`
-	ShortDescriptionEN  string `json:"shortDescription_EN,omitempty"`
-	ShortDescriptionES  string `json:"shortDescription_ES,omitempty"`
-	ShortDescriptionBG  string `json:"shortDescription_BG,omitempty"`
-	Um                  string `json:"um,omitempty"`
+	DescriptionIT      string `json:"description_IT,omitempty"`
+	DescriptionEN      string `json:"description_EN,omitempty"`
+	DescriptionES      string `json:"description_ES,omitempty"`
+	DescriptionBG      string `json:"description_BG,omitempty"`
+	ShortDescriptionIT string `json:"shortDescription_IT,omitempty"`
+	ShortDescriptionEN string `json:"shortDescription_EN,omitempty"`
+	ShortDescriptionES string `json:"shortDescription_ES,omitempty"`
+	ShortDescriptionBG string `json:"shortDescription_BG,omitempty"`
+	Um                 string `json:"um,omitempty"`
 }
 
 // OfficeType lookup for contact offices.
@@ -49,12 +49,12 @@ type ContactRole struct {
 
 // PaymentTerm matches swagger PaymentTermApi.
 type PaymentTerm struct {
-	ID            int32             `json:"id,omitempty"`
-	IDPaymentType *int32            `json:"idPaymentType,omitempty"`
-	Description   string            `json:"description,omitempty"`
-	EndOfMonth    bool              `json:"endOfMonth,omitempty"`
-	ExtraDays     int32             `json:"extraDays,omitempty"`
-	Pos           []PaymentTermPos  `json:"pos,omitempty"`
+	ID            int32            `json:"id,omitempty"`
+	IDPaymentType *int32           `json:"idPaymentType,omitempty"`
+	Description   string           `json:"description,omitempty"`
+	EndOfMonth    bool             `json:"endOfMonth,omitempty"`
+	ExtraDays     int32            `json:"extraDays,omitempty"`
+	Pos           []PaymentTermPos `json:"pos,omitempty"`
 }
 
 // PaymentTermPos matches swagger PaymentTermPosApi.

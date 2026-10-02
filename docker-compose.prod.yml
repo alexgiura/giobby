@@ -1,0 +1,85 @@
+# Compose for the Coolify production resource (cloud4job-infra). Not to be
+# confused with docker-compose.yml, the local development stack: Coolify must
+# be configured to use this file explicitly, on the `release` branch (moved by
+# the CI only after a green run on main).
+#
+# No Postgres here: giobby uses the shared Postgres of cloud4job-infra,
+# reached through Coolify's predefined network ("Connect To Predefined
+# Network"). Roles: giobby owns the database and runs `migrate`; giobby_app is
+# the API role (data only). See docs/DEPLOY-COOLIFY.md.
+#
+# VPN only: the single published port is bound to the VPN address of the
+# server, never 0.0.0.0. giobby.cloud4job.com resolves to it only for VPN
+# clients (internal dnsmasq).
+
+x-logging: &logging
+  driver: local
+  options:
+    max-size: "20m"
+    max-file: "5"
+
+services:
+  # Applies pending migrations on every deploy; the backend starts only if it succeeds.
+  migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["./migrate"]
+    restart: "no"
+    environment:
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?missing POSTGRES_DB_HOST}
+      POSTGRES_DB_PORT: "5432"
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?missing POSTGRES_DB_NAME}
+      POSTGRES_DB_SSLMODE: disable
+      MIGRATION_DB_USER: ${MIGRATION_DB_USER:?missing MIGRATION_DB_USER}
+      MIGRATION_DB_PASSWORD: ${MIGRATION_DB_PASSWORD:?missing MIGRATION_DB_PASSWORD}
+      MIGRATION_APP_ROLE: ${MIGRATION_APP_ROLE:?missing MIGRATION_APP_ROLE}
+    logging: *logging
+
+  # Named giobby-backend, not backend: with "Connect To Predefined Network" the
+  # services share Coolify's network with other stacks, where a generic name could
+  # resolve to someone else's container.
+  giobby-backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      SERVER_PORT: "8080"
+      ENVIRONMENT: production
+      DEBUG_MODE: ${DEBUG_MODE:-false}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Europe/Bucharest}
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?missing POSTGRES_DB_HOST}
+      POSTGRES_DB_PORT: "5432"
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?missing POSTGRES_DB_NAME}
+      POSTGRES_DB_USER: ${POSTGRES_DB_USER:?missing POSTGRES_DB_USER}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD:?missing POSTGRES_DB_PASSWORD}
+      POSTGRES_DB_SSLMODE: disable
+      JWT_SECRET: ${JWT_SECRET:?missing JWT_SECRET}
+      ACCESS_TOKEN_TTL_SECONDS: ${ACCESS_TOKEN_TTL_SECONDS:-3600}
+      REFRESH_TOKEN_TTL_DAYS: ${REFRESH_TOKEN_TTL_DAYS:-7}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://giobby.cloud4job.com:2001}
+      SWAGGER_PATH: /root/swagger.json
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging: *logging
+
+  # API Explorer UI; also proxies /api/, /health and /healthz to the backend.
+  api-explorer:
+    build: ./api-explorer
+    restart: unless-stopped
+    depends_on:
+      giobby-backend:
+        condition: service_healthy
+    environment:
+      BACKEND_HOST: giobby-backend
+    ports:
+      - "10.8.0.1:2001:80"
+    logging: *logging

@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"encoding/json"
 	"dnsc_microservice/internal/models"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -11,14 +11,14 @@ import (
 
 // Error codes
 const (
-	ErrCodeInvalidRequest       = "INVALID_REQUEST"
-	ErrCodeValidationFailed      = "VALIDATION_FAILED"
-	ErrCodeNotFound             = "NOT_FOUND"
-	ErrCodeConflict             = "CONFLICT"
-	ErrCodeForeignKeyViolation  = "FOREIGN_KEY_VIOLATION"
-	ErrCodeUnauthorized         = "UNAUTHORIZED"
-	ErrCodeForbidden            = "FORBIDDEN"
-	ErrCodeInternalError        = "INTERNAL_ERROR"
+	ErrCodeInvalidRequest      = "INVALID_REQUEST"
+	ErrCodeValidationFailed    = "VALIDATION_FAILED"
+	ErrCodeNotFound            = "NOT_FOUND"
+	ErrCodeConflict            = "CONFLICT"
+	ErrCodeForeignKeyViolation = "FOREIGN_KEY_VIOLATION"
+	ErrCodeUnauthorized        = "UNAUTHORIZED"
+	ErrCodeForbidden           = "FORBIDDEN"
+	ErrCodeInternalError       = "INTERNAL_ERROR"
 )
 
 // isDevelopment checks if the application is running in development mode
@@ -26,13 +26,13 @@ const (
 func isDevelopment() bool {
 	env := os.Getenv("ENVIRONMENT")
 	debugMode := os.Getenv("DEBUG_MODE")
-	
+
 	// Check ENVIRONMENT variable
 	isDevEnv := env == "development" || env == "dev" || env == ""
-	
+
 	// Check DEBUG_MODE variable (if set to "true" or "1")
 	isDebugMode := debugMode == "true" || debugMode == "1"
-	
+
 	// Return true if either condition is met
 	return isDevEnv || isDebugMode
 }
@@ -105,4 +105,3 @@ func parseDatabaseError(err error) (statusCode int, code, message string) {
 	return http.StatusInternalServerError, ErrCodeInternalError,
 		"An unexpected error occurred. Please try again later."
 }
-

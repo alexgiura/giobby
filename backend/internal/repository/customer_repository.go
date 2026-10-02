@@ -232,7 +232,6 @@ func (r *customerRepository) GetCustomerReport(ctx context.Context, id string) (
 	}, nil
 }
 
-
 func customerSelectSQL() string {
 	return customerBaseSelectSQL() + `, ` + contactSelectCols
 }
@@ -303,4 +302,3 @@ func appendCustomerFilters(sql string, args []any, n int, name, freeText string,
 	}
 	return sql, args, n
 }
-

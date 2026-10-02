@@ -28,22 +28,22 @@ type AppSettings struct {
 
 // DatabaseSettings holds configuration related to the PostgreSQL database.
 type DatabaseSettings struct {
-	User           string `env:"POSTGRES_DB_USER" envDefault:"postgres"`
-	Password       string `env:"POSTGRES_DB_PASSWORD" envDefault:"postgres"`
-	Host           string `env:"POSTGRES_DB_HOST" envDefault:"localhost"`
-	Port           string `env:"POSTGRES_DB_PORT" envDefault:"5432"`
+	User     string `env:"POSTGRES_DB_USER" envDefault:"postgres"`
+	Password string `env:"POSTGRES_DB_PASSWORD" envDefault:"postgres"`
+	Host     string `env:"POSTGRES_DB_HOST" envDefault:"localhost"`
+	Port     string `env:"POSTGRES_DB_PORT" envDefault:"5432"`
 	DbName   string `env:"POSTGRES_DB_NAME" envDefault:"giobby_bff"`
 	SSLMode  string `env:"POSTGRES_DB_SSLMODE" envDefault:"disable"`
 }
 
 // Config holds configuration for the API and database.
 type Config struct {
-	AppSettings         AppSettings
-	DatabaseSettings    DatabaseSettings
-	JWTSecret              string `env:"JWT_SECRET" envDefault:"dev-jwt-secret-change-me"`
-	AccessTokenTTLSeconds  int    `env:"ACCESS_TOKEN_TTL_SECONDS" envDefault:"3600"`
-	RefreshTokenTTLDays    int    `env:"REFRESH_TOKEN_TTL_DAYS" envDefault:"7"`
-	CORSAllowedOrigins     string `env:"CORS_ALLOWED_ORIGINS" envDefault:"http://localhost:5173,http://127.0.0.1:5173"`
+	AppSettings           AppSettings
+	DatabaseSettings      DatabaseSettings
+	JWTSecret             string `env:"JWT_SECRET" envDefault:"dev-jwt-secret-change-me"`
+	AccessTokenTTLSeconds int    `env:"ACCESS_TOKEN_TTL_SECONDS" envDefault:"3600"`
+	RefreshTokenTTLDays   int    `env:"REFRESH_TOKEN_TTL_DAYS" envDefault:"7"`
+	CORSAllowedOrigins    string `env:"CORS_ALLOWED_ORIGINS" envDefault:"http://localhost:5173,http://127.0.0.1:5173"`
 }
 
 // ConnectPostgreSQL connects to PostgreSQL database and returns a connection pool

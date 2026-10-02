@@ -6,4 +6,3 @@ type ErrorResponse struct {
 	Message string `json:"message"`           // Human-readable error message
 	Details string `json:"details,omitempty"` // Additional details (only in dev mode)
 }
-
