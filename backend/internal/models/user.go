@@ -13,7 +13,7 @@ type CompanyUser struct {
 	IsAgent1    bool   `json:"isAgent1,omitempty"`
 	IsAgent2    bool   `json:"isAgent2,omitempty"`
 	IsEmployee  bool   `json:"isEmployee,omitempty"`
-	Image        string `json:"image,omitempty"`
+	Image       string `json:"image,omitempty"`
 }
 
 type CompanyUserListQuery struct {

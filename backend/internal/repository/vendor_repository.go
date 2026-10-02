@@ -230,7 +230,6 @@ func (r *vendorRepository) GetVendorReport(ctx context.Context, id string) (*mod
 	}, nil
 }
 
-
 func vendorSelectSQL() string {
 	return vendorBaseSelectSQL() + `, ` + contactSelectCols
 }
@@ -301,4 +300,3 @@ func appendVendorFilters(sql string, args []any, n int, name, freeText string, d
 	}
 	return sql, args, n
 }
-

@@ -71,4 +71,3 @@ func NewPostgresPool(ctx context.Context, cfg *config.Config) (*pgxpool.Pool, er
 
 	return nil, fmt.Errorf("unable to establish database connection after %d retries: %w", maxRetries, err)
 }
-

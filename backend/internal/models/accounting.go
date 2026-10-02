@@ -13,16 +13,16 @@ type AccountMovement struct {
 
 // AccountMovementRegistration matches swagger AccountMovementRegistrationApi.
 type AccountMovementRegistration struct {
-	IDDoc                   int32             `json:"idDoc,omitempty"`
-	Bu                      string            `json:"bu,omitempty"`
-	Bup                     string            `json:"bup,omitempty"`
-	IDNumerator             int32             `json:"idNumerator,omitempty"`
-	IDAccountmovementType   int32             `json:"idAccountmovementType,omitempty"`
-	DocDate                 *int64            `json:"docDate,omitempty"`
-	RegDate                 *int64            `json:"regDate,omitempty"`
-	IDAccountCenter         *int32            `json:"idAccountCenter,omitempty"`
-	Description             string            `json:"description,omitempty"`
-	Rows                    []AccountMovement `json:"rows,omitempty"`
+	IDDoc                 int32             `json:"idDoc,omitempty"`
+	Bu                    string            `json:"bu,omitempty"`
+	Bup                   string            `json:"bup,omitempty"`
+	IDNumerator           int32             `json:"idNumerator,omitempty"`
+	IDAccountmovementType int32             `json:"idAccountmovementType,omitempty"`
+	DocDate               *int64            `json:"docDate,omitempty"`
+	RegDate               *int64            `json:"regDate,omitempty"`
+	IDAccountCenter       *int32            `json:"idAccountCenter,omitempty"`
+	Description           string            `json:"description,omitempty"`
+	Rows                  []AccountMovement `json:"rows,omitempty"`
 }
 
 type AccountMovementListQuery struct {

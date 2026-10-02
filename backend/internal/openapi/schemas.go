@@ -41,7 +41,7 @@ func defaultRequestBody(path, method string) *RequestBody {
 			Content: map[string]MediaType{
 				"application/json": {
 					Schema: &Schema{
-						Type: "object",
+						Type:     "object",
 						Required: []string{"username", "password"},
 						Properties: map[string]*Schema{
 							"username": {Type: "string", Example: "demo"},
@@ -64,7 +64,7 @@ func defaultRequestBody(path, method string) *RequestBody {
 			Content: map[string]MediaType{
 				"application/json": {
 					Schema: &Schema{
-						Type: "object",
+						Type:     "object",
 						Required: []string{"username", "password"},
 						Properties: map[string]*Schema{
 							"username": {Type: "string", Example: "demo"},
@@ -82,7 +82,7 @@ func defaultRequestBody(path, method string) *RequestBody {
 			Content: map[string]MediaType{
 				"application/json": {
 					Schema: &Schema{
-						Type: "object",
+						Type:     "object",
 						Required: []string{"refresh_token"},
 						Properties: map[string]*Schema{
 							"grant_type":    {Type: "string", Example: "refresh_token"},
@@ -439,16 +439,16 @@ func schemaPropertyNames(s *Schema, defs map[string]json.RawMessage) []string {
 
 // knownRequiredFields supplements swagger defs that omit "required".
 var knownRequiredFields = map[string][]string{
-	"POST /api/messages":                 {"body"},
-	"POST /api/users":                    {"username", "password"},
-	"POST /api/settings":                 {"key1"},
-	"POST /api/loggeduser/changelanguage": {"language"},
-	"POST /api/loggeduser/devicetoken":   {"deviceToken"},
-	"POST /api/loggeduser/image":         {"imageUrl"},
-	"POST /api/contacts":                 {"name"},
-	"POST /api/customers":                {"idcustomer"},
-	"POST /api/vendors":                  {"idvendor"},
-	"POST /api/products/product":         {"idmaterial"},
+	"POST /api/messages":                         {"body"},
+	"POST /api/users":                            {"username", "password"},
+	"POST /api/settings":                         {"key1"},
+	"POST /api/loggeduser/changelanguage":        {"language"},
+	"POST /api/loggeduser/devicetoken":           {"deviceToken"},
+	"POST /api/loggeduser/image":                 {"imageUrl"},
+	"POST /api/contacts":                         {"name"},
+	"POST /api/customers":                        {"idcustomer"},
+	"POST /api/vendors":                          {"idvendor"},
+	"POST /api/products/product":                 {"idmaterial"},
 	"POST /api/plugins/bindcommerce/updatestock": {"idMaterials"},
 }
 

@@ -20,17 +20,17 @@ type Stock struct {
 
 // StockAvailability is an aggregated availability row.
 type StockAvailability struct {
-	IDMaterial     string  `json:"idMaterial,omitempty"`
-	MaterialDesc   string  `json:"materialDesc,omitempty"`
-	IDStorage      string  `json:"idStorage,omitempty"`
-	StorageDesc    string  `json:"storageDesc,omitempty"`
-	IDLocation     string  `json:"idLocation,omitempty"`
-	LocationDesc   string  `json:"locationDesc,omitempty"`
-	IDLot          string  `json:"idLot,omitempty"`
-	Quantity       float64 `json:"quantity,omitempty"`
-	CommittedQty   float64 `json:"committedQty,omitempty"`
-	AvailableQty   float64 `json:"availableQty,omitempty"`
-	Um             string  `json:"um,omitempty"`
+	IDMaterial   string  `json:"idMaterial,omitempty"`
+	MaterialDesc string  `json:"materialDesc,omitempty"`
+	IDStorage    string  `json:"idStorage,omitempty"`
+	StorageDesc  string  `json:"storageDesc,omitempty"`
+	IDLocation   string  `json:"idLocation,omitempty"`
+	LocationDesc string  `json:"locationDesc,omitempty"`
+	IDLot        string  `json:"idLot,omitempty"`
+	Quantity     float64 `json:"quantity,omitempty"`
+	CommittedQty float64 `json:"committedQty,omitempty"`
+	AvailableQty float64 `json:"availableQty,omitempty"`
+	Um           string  `json:"um,omitempty"`
 }
 
 type StockAvailabilityQuery struct {

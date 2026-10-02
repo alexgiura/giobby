@@ -113,18 +113,18 @@ type PartnerReport struct {
 
 type ContactListQuery struct {
 	ListQuery
-	Type          string
+	Type           string
 	VisibilityType string
-	FullName      string
-	FreeText      string
-	Deleted       *bool
-	Email         string
-	FiscalCode    string
-	VatCode       string
-	OnlyCustomers bool
-	OnlyVendors   bool
-	OnlyLeads     bool
-	RetrieveImage bool
+	FullName       string
+	FreeText       string
+	Deleted        *bool
+	Email          string
+	FiscalCode     string
+	VatCode        string
+	OnlyCustomers  bool
+	OnlyVendors    bool
+	OnlyLeads      bool
+	RetrieveImage  bool
 }
 
 type ContactSourceListQuery struct {
