@@ -27,13 +27,13 @@ services:
     command: ["./migrate"]
     restart: "no"
     environment:
-      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?missing POSTGRES_DB_HOST}
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?}
       POSTGRES_DB_PORT: "5432"
-      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?missing POSTGRES_DB_NAME}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?}
       POSTGRES_DB_SSLMODE: disable
-      MIGRATION_DB_USER: ${MIGRATION_DB_USER:?missing MIGRATION_DB_USER}
-      MIGRATION_DB_PASSWORD: ${MIGRATION_DB_PASSWORD:?missing MIGRATION_DB_PASSWORD}
-      MIGRATION_APP_ROLE: ${MIGRATION_APP_ROLE:?missing MIGRATION_APP_ROLE}
+      MIGRATION_DB_USER: ${MIGRATION_DB_USER:?}
+      MIGRATION_DB_PASSWORD: ${MIGRATION_DB_PASSWORD:?}
+      MIGRATION_APP_ROLE: ${MIGRATION_APP_ROLE:?}
     logging: *logging
 
   # Named giobby-backend, not backend: with "Connect To Predefined Network" the
@@ -52,13 +52,13 @@ services:
       ENVIRONMENT: production
       DEBUG_MODE: ${DEBUG_MODE:-false}
       APP_TIMEZONE: ${APP_TIMEZONE:-Europe/Bucharest}
-      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?missing POSTGRES_DB_HOST}
+      POSTGRES_DB_HOST: ${POSTGRES_DB_HOST:?}
       POSTGRES_DB_PORT: "5432"
-      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?missing POSTGRES_DB_NAME}
-      POSTGRES_DB_USER: ${POSTGRES_DB_USER:?missing POSTGRES_DB_USER}
-      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD:?missing POSTGRES_DB_PASSWORD}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME:?}
+      POSTGRES_DB_USER: ${POSTGRES_DB_USER:?}
+      POSTGRES_DB_PASSWORD: ${POSTGRES_DB_PASSWORD:?}
       POSTGRES_DB_SSLMODE: disable
-      JWT_SECRET: ${JWT_SECRET:?missing JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:?}
       ACCESS_TOKEN_TTL_SECONDS: ${ACCESS_TOKEN_TTL_SECONDS:-3600}
       REFRESH_TOKEN_TTL_DAYS: ${REFRESH_TOKEN_TTL_DAYS:-7}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://giobby.cloud4job.com:2001}
@@ -82,4 +82,10 @@ services:
       BACKEND_HOST: giobby-backend
     ports:
       - "10.8.0.1:2001:80"
+    # Static page only: the explorer is healthy even if the backend restarts.
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     logging: *logging

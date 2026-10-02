@@ -30,7 +30,7 @@ feat/… ──PR──▶ dev ──PR──▶ main ──CI verde──▶ re
 
 | Cosa | Requisito |
 |---|---|
-| PostgreSQL | 17 (Postgres condiviso di cloud4job-infra) |
+| PostgreSQL | 18.6 (Postgres condiviso di cloud4job-infra; CI e compose locale usano la stessa versione) |
 | Ruolo `giobby` | LOGIN, proprietario del database `giobby`, non superuser: esegue le migrazioni |
 | Ruolo `giobby_app` | LOGIN, non superuser, non proprietario di nulla: i permessi li dà `migrate` |
 | Password | esadecimali (`openssl rand -hex 24`): il backend non fa escaping nel DSN |
@@ -94,11 +94,16 @@ poi `systemctl restart dnsmasq` e `ss -tulpn | grep dnsmasq` (deve ascoltare sol
 
 Dal pannello (`http://coolify.cloud4job.com:8000`, in VPN):
 
-1. Progetto **giobby** → *New Resource* → *Docker Compose* dal repository `Cloud4Job/giobby-backend`
-   (GitHub App già usata per gli altri progetti).
-2. Branch **`release`**, Docker Compose location **`/docker-compose.prod.yml`**.
-3. Impostazioni: **Connect To Predefined Network** attivo; nessun dominio sui servizi; auto-deploy attivo.
-4. Variabili:
+1. Progetto **giobby** → *New Resource* → **Git Repository (with GitHub App)** → App `cloud4job-coolify`
+   (installata sull'organizzazione con accesso a tutti i repository) → `Cloud4Job/giobby-backend`.
+2. **Branch `release`** (non `main`), **Build pack `Docker Compose`** (il default è Railpack/Nixpacks),
+   Docker Compose location **`/docker-compose.prod.yml`** (il default `/docker-compose.yaml` è il compose locale),
+   Base directory `/`, Watch paths vuoto.
+3. Impostazioni: **Connect To Predefined Network** attivo; **nessun dominio** su nessun servizio (Coolify può
+   generarne uno `…sslip.io` pubblico: va cancellato); auto-deploy attivo.
+4. Pagina delle variabili, **Normal View**:
+   - **Build secrets → "Standard build arguments"** (vedi §5.1);
+   - per **ogni** variabile, dall'ingranaggio: **Build time → "Not available during build"**, Runtime disponibile.
 
    | Variabile | Valore | Obbligatoria |
    |---|---|---|
@@ -106,7 +111,7 @@ Dal pannello (`http://coolify.cloud4job.com:8000`, in VPN):
    | `POSTGRES_DB_NAME` | `giobby` | sì |
    | `POSTGRES_DB_USER` | `giobby_app` | sì |
    | `POSTGRES_DB_PASSWORD` | da `/root/giobby-secrets.env` | sì |
-   | `JWT_SECRET` | da `/root/giobby-secrets.env` | sì |
+   | `JWT_SECRET` | da `/root/giobby-secrets.env` (almeno 32 caratteri, il backend lo controlla) | sì |
    | `MIGRATION_DB_USER` | `giobby` | sì |
    | `MIGRATION_DB_PASSWORD` | da `/root/giobby-secrets.env` | sì |
    | `MIGRATION_APP_ROLE` | `giobby_app` | sì |
@@ -116,8 +121,28 @@ Dal pannello (`http://coolify.cloud4job.com:8000`, in VPN):
    | `CORS_ALLOWED_ORIGINS` | default `http://giobby.cloud4job.com:2001` | no |
    | `DEBUG_MODE` | default `false` | no |
 
-   Se una variabile obbligatoria manca il deploy si ferma subito con `missing <NOME>`.
-5. **Deploy** (il primo deploy richiede che `release` esista: lo crea la CI al primo merge su `main`).
+   Se una variabile obbligatoria è vuota il deploy si ferma con `required variable <NOME> is missing a value`.
+5. **Prima del deploy** controllare dal database di Coolify che nessuna variabile sia build-time (sola lettura):
+   ```bash
+   docker exec coolify-db psql -U coolify -d coolify -Atc "select key, is_buildtime from environment_variables
+     where resourceable_type like '%Application' and not is_preview and resourceable_id =
+     (select id from applications where uuid = '<uuid della risorsa>') order by 1"   # tutte 'f'
+   ```
+6. **Deploy** (il primo deploy richiede che `release` esista: lo crea la CI al primo merge su `main`).
+   Nel log: al massimo `Added 2 ARG declarations` (solo `COOLIFY_FQDN`). Se compaiono di più, una variabile è
+   ancora build-time: i suoi valori finiscono nella cronologia dell'immagine (`docker history`) e vanno ruotati.
+7. Cancellare `/root/giobby-secrets.env` dopo aver copiato i valori.
+
+### 5.1 Insidie di Coolify (v4.3.23, verificate il 2026-10-02)
+
+| Comportamento | Effetto | Come evitarlo |
+|---|---|---|
+| Con **Build secrets = "Docker BuildKit secrets"** e più servizi con `build:`, Coolify riscrive ogni Dockerfile riusando un buffer che accoda (`dockerfile_content`, `append` di default in `ExecuteRemoteCommand`) | il Dockerfile di un servizio riceve quello dei precedenti: build di `api-explorer` con il Dockerfile del backend (`"/swagger.json": not found`) | Build secrets = **"Standard build arguments"** |
+| Le variabili **Build time** diventano `ARG` iniettati nei Dockerfile | con "Standard build arguments" i valori restano in chiaro nella cronologia delle immagini | **tutte** le variabili "Not available during build" (nessuna serve al build) |
+| La **vista developer** (testo `CHIAVE=valore`) ricrea le variabili con Build time attivo | un segreto aggiornato da lì torna build-time | aggiornare i segreti **dall'ingranaggio** nella Normal View; ricontrollare con il §5 punto 5 |
+| `${VAR:?messaggio}` nel compose | Coolify salva il messaggio come **valore** (`JWT_SECRET=missing JWT_SECRET`) | usare `${VAR:?}` senza messaggio (lo verifica `scripts/check-prod-compose.sh`); il backend rifiuta comunque in produzione un `JWT_SECRET` segnaposto o sotto i 32 caratteri |
+| Le variabili citate nel compose non si possono cancellare dall'interfaccia | "Cannot delete environment variable … remove it from the Docker Compose file first" | correggere il valore o i flag, non cancellare |
+| Servizio senza healthcheck | stato della risorsa `unknown` | ogni servizio a lunga vita ha un healthcheck (lo verifica lo script) |
 
 ## 6. Verifica
 
@@ -154,7 +179,9 @@ curl -s -o /dev/null -w "%{http_code}\n" http://giobby.cloud4job.com:2001/api/at
 
 | Sintomo | Causa / azione |
 |---|---|
-| Deploy fallito con `missing <NOME>` | variabile obbligatoria non impostata in Coolify (§5) |
+| Deploy fallito con `required variable <NOME> is missing a value` | variabile obbligatoria vuota in Coolify (§5) |
+| Il backend esce con `JWT_SECRET is a default or placeholder value` o `must be at least 32 characters` | `JWT_SECRET` non impostato correttamente in Coolify: generarne uno con `openssl rand -hex 32` |
+| Build fallito con `"/swagger.json": not found` su `api-explorer` | Build secrets = BuildKit (§5.1): passare a "Standard build arguments" |
 | `migrate` esce 1 con `migration checksum mismatch: NNN_….sql` | un file di migrazione già applicato è stato modificato: ripristinarlo com'era e scrivere una nuova migrazione |
 | `migrate` esce 1 con `applied migration missing from code` | si è fatto il deploy di un commit più vecchio delle migrazioni già applicate: rifare il deploy di `release` aggiornato |
 | `migrate` esce 1 con `apply NNN_….sql: …` | la migrazione nuova è sbagliata; la transazione è annullata, il database è come prima |

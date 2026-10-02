@@ -7,7 +7,7 @@ Production runs on Coolify (VPN only): see [docs/DEPLOY-COOLIFY.md](docs/DEPLOY-
 
 - **backend** — HTTP API (Go, Gorilla Mux, JWT). Listens on port `8080`.
 - **migrate** — applies the versioned migrations in `backend/internal/db/migrations` before the API starts, on every start.
-- **db** — PostgreSQL 17 (local only; production uses the shared Postgres of cloud4job-infra).
+- **db** — PostgreSQL 18.6 (local only; production uses the shared Postgres of cloud4job-infra, same version).
 - **api-explorer** — Swagger UI for the API. Available on port `3000`.
 
 ## Run
@@ -18,7 +18,7 @@ cp backend/.env.example backend/.env
 docker compose up -d --build
 ```
 
-An existing local volume from PostgreSQL 16 must be recreated once: `docker compose down -v`.
+The local database lives in the `giobby_pg18` volume. Volumes from older setups (`giobby_pgdata`, PostgreSQL 16/17) are no longer used and can be removed with `docker volume rm giobby_pgdata`.
 
 | Service      | URL                          |
 |--------------|------------------------------|
