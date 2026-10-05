@@ -134,7 +134,7 @@ in VPN: `http://giobby.cloud4job.com:2001` (guida: `docs/DEPLOY-COOLIFY.md`).
 | Percorso | Contenuto |
 |---|---|
 | `backend/cmd/main.go` | avvio dell'API HTTP |
-| `backend/cmd/migrate` | comando delle migrazioni (servizio `migrate`, prima dell'API a ogni deploy) |
+| `backend/cmd/migrate` | comando delle migrazioni (servizio `giobby-migrate` in produzione, `migrate` in locale; prima dell'API a ogni deploy) |
 | `backend/internal/db/migrations/` | migrazioni SQL versionate (`NNN_nome.sql`) |
 | `backend/internal/db/migrate.go` | runner: transazione, advisory lock, checksum SHA-256, permessi al ruolo app |
 | `backend/internal/config` | configurazione da variabili d'ambiente; in produzione rifiuta `JWT_SECRET` deboli |
@@ -162,10 +162,11 @@ scripts/check-prod-compose.sh             # controllo del compose di produzione
 - **Migrazioni**: mai modificare un file già applicato; ogni cambio di schema è un nuovo file con
   prefisso maggiore dell'ultimo. Le migrazioni non partono all'avvio dell'API.
 - **Ruoli del database**: `giobby` (proprietario, migrazioni) e `giobby_app` (API, solo dati, niente
-  DDL). Nuove tabelle e sequenze ricevono i permessi da `migrate`.
+  DDL). Nuove tabelle e sequenze ricevono i permessi dal comando delle migrazioni.
 - **Contratto HTTP**: ogni cambio di API aggiorna `swagger.json`; errori generici verso il client.
-- **Servizi di produzione**: nomi univoci sulla rete condivisa di Coolify (`giobby-backend`); il proxy
-  dell'API Explorer usa `BACKEND_HOST`, mai un nome generico.
+- **Servizi di produzione**: tutti con il prefisso `giobby-` (`giobby-migrate`, `giobby-backend`,
+  `giobby-api-explorer`) per la rete condivisa di Coolify; lo verifica `scripts/check-prod-compose.sh`.
+  Il proxy dell'API Explorer usa `BACKEND_HOST`, mai un nome generico.
 - **Segreti**: solo in Coolify, "Not available during build"; `backend/.env` è solo locale e
   ignorato da git.
 <!-- /project -->
