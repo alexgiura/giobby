@@ -1,9 +1,8 @@
 name: CI
 
-# Runs on every pull request and on pushes to dev and main. On main, and only
-# when every job is green, it fast-forwards `release` to the tested commit:
-# Coolify deploys production from `release`, so a red CI never reaches production
-# (GitHub Free cannot block the merge button on private repositories).
+# Every PR and push to dev/main runs the stack checks in Docker (.cloud4job/run.sh).
+# On main, and only if every job is green, `release` is fast-forwarded to the tested
+# commit: Coolify deploys from `release`, so a red CI never reaches production.
 
 on:
   pull_request:
@@ -19,49 +18,25 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  go:
+  checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    services:
-      postgres:
-        # Same version as the shared production Postgres (cloud4job-infra).
-        image: postgres:18.6-alpine
-        env:
-          POSTGRES_PASSWORD: ci-only-password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-    defaults:
-      run:
-        working-directory: backend
-    env:
-      GIOBBY_TEST_DATABASE_URL: postgres://postgres:ci-only-password@localhost:5432/postgres?sslmode=disable
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: backend/go.mod
-          cache-dependency-path: backend/go.sum
-      - name: Formatting (gofmt)
-        run: |
-          unformatted=$(gofmt -l .)
-          if [ -n "$unformatted" ]; then echo "Files to format with gofmt:"; echo "$unformatted"; exit 1; fi
-      - run: go vet ./...
-      - run: go build ./...
-      - name: Tests (migrations against PostgreSQL 18)
-        run: go test -count=1 ./...
+      - name: Formatting
+        run: .cloud4job/run.sh fmt-check
+      - name: Lint
+        run: .cloud4job/run.sh lint
+      - name: Tests
+        run: .cloud4job/run.sh test
 
   docker:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Build backend image (API + migrate)
-        run: docker build -f backend/Dockerfile -t giobby-backend:ci .
+        run: .cloud4job/run.sh build
       - name: Build API Explorer image
         run: docker build -t giobby-api-explorer:ci ./api-explorer
       - name: Check production compose
@@ -71,18 +46,24 @@ jobs:
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [go, docker]
+    needs: [checks, docker]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: write
+      pull-requests: read
     concurrency:
       group: release
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: The commit is the merge of a pull request into main
+        # A direct push to main with green CI must not reach production.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: .github/branch-guard.sh main
       - name: Fast-forward release to the tested commit
         # No --force: if release cannot fast-forward, the job fails and production stays as it is.
         run: git push origin "$GITHUB_SHA:refs/heads/release"
