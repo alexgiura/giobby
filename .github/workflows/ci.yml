@@ -57,6 +57,10 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: with a shallow clone git lacks the commit release points to and
+          # rejects the fast-forward push ("rejected (fetch first)").
+          fetch-depth: 0
       - name: The commit is the merge of a pull request into main
         # A direct push to main with green CI must not reach production.
         env:
