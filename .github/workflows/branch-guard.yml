@@ -37,16 +37,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
-          ACTOR: ${{ github.actor }}
           BRANCH: ${{ github.ref_name }}
-        run: |
-          for _ in 1 2 3; do
-            merged=$(gh api "repos/$REPO/commits/$SHA/pulls" | jq --arg branch "$BRANCH" --arg sha "$SHA" -f .github/branch-guard.jq)
-            if [ "$merged" -gt 0 ]; then
-              echo "Commit $SHA è il merge di una pull request in $BRANCH."
-              exit 0
-            fi
-            sleep 10
-          done
-          echo "::error::Push diretto su $BRANCH ($SHA, da $ACTOR) senza pull request. Vedi .github/CONTRIBUTING.md."
-          exit 1
+        run: .github/branch-guard.sh "$BRANCH"

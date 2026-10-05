@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git add *)",
+      "Bash(git switch -c *)",
+      "Bash(ls*)",
+      "Bash(.cloud4job/run.sh *)",
+      "Bash(docker compose up*)",
+      "Bash(docker compose build*)",
+      "Bash(docker compose ps*)",
+      "Bash(docker compose logs*)",
+      "Bash(docker compose down)"
+    ],
+    "ask": [
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git reset*)",
+      "Bash(git rebase*)",
+      "Bash(git restore*)",
+      "Bash(git checkout -- *)",
+      "Bash(git stash drop*)",
+      "Bash(git branch -D *)",
+      "Bash(gh pr *)",
+      "Bash(gh issue *)",
+      "Bash(gh api *)",
+      "Bash(gh release *)",
+      "Bash(rm *)",
+      "Bash(mv *)",
+      "Bash(docker compose down -v*)",
+      "Bash(docker volume rm *)",
+      "Bash(ssh *)",
+      "Edit(.github/**)",
+      "Edit(.claude/**)",
+      "Edit(.githooks/**)",
+      "Edit(.cloud4job/**)",
+      "Edit(**/Dockerfile)",
+      "Edit(**/docker-compose*.yml)",
+      "Edit(**/migrations/**)",
+      "Edit(**/go.mod)",
+      "Edit(**/package.json)",
+      "Edit(**/pyproject.toml)",
+      "Edit(**/pubspec.yaml)",
+      "Edit(**/build.gradle.kts)",
+      "Bash(docker run *)",
+      "Bash(docker compose run*)",
+      "Bash(docker compose exec*)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.production)",
+      "Read(**/.env.staging)",
+      "Read(**/.local/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.jks)",
+      "Read(**/*.keystore)",
+      "Read(**/id_rsa*)",
+      "Read(**/id_ed25519*)",
+      "Read(**/local.properties)",
+      "Read(~/.ssh/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.aws/**)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push --no-verify*)",
+      "Bash(git push origin main*)",
+      "Bash(git push origin dev*)",
+      "Bash(git push origin release*)",
+      "Bash(sudo *)",
+      "Bash(curl * | sh*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | sh*)",
+      "Bash(gh secret *)",
+      "Bash(gh auth *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start-log.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read|Edit|MultiEdit|Write|NotebookEdit|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-sensitive-file.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-sensitive-command.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/audit-tool-use.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-written-file.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,16 @@
-.claude/
 DOCUMENTATION.MD
 
 # Local secrets
 .env
 backend/.env
+
+# Cloud4Job kit
+.env.*
+!.env.example
+.local/
+.claude/settings.local.json
+.claude/audit.log
+*.conflict
+.DS_Store
+/bin/
+coverage.out

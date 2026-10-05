@@ -1,0 +1,9 @@
+* text=auto eol=lf
+# Checksummed or executed files must keep LF on every platform (WSL, macOS, Linux).
+*.sh text eol=lf
+*.sql text eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.jar binary
+*.keystore binary
