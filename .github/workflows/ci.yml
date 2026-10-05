@@ -43,6 +43,8 @@ jobs:
         run: scripts/check-prod-compose.sh
       - name: Test branch guard filter
         run: scripts/test-branch-guard.sh
+      - name: Test project effort script
+        run: docker run --rm -v "$PWD":/src -w /src/.github/scripts python:3.12.7-slim python -m unittest -q
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

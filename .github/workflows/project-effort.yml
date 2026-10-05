@@ -1,0 +1,37 @@
+name: Effettivo del project
+
+# Fills "Inizio sviluppo", "Fine sviluppo" and "Effettivo (h)" in the Giobby API project
+# (.github/scripts/project_effort.py). Every 30 minutes during working hours, Mon-Fri:
+# Actions minutes are limited on private repositories (each run counts at least one minute).
+# Scheduled workflows run from the default branch (main).
+
+on:
+  schedule:
+    - cron: "*/30 6-17 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: project-effort
+  cancel-in-progress: false
+
+jobs:
+  effort:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+      - name: Update the project effort fields
+        env:
+          # Fine-grained token with Organization "Projects: Read and write" (see .github/CONTRIBUTING.md).
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          if [ -z "$PROJECT_TOKEN" ]; then
+            echo "::warning::PROJECT_TOKEN non impostato: nessun aggiornamento del project."
+            exit 0
+          fi
+          docker run --rm -e PROJECT_TOKEN -v "$PWD":/src -w /src/.github/scripts python:3.12.7-slim python project_effort.py
