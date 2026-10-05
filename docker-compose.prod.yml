@@ -20,7 +20,7 @@ x-logging: &logging
 
 services:
   # Applies pending migrations on every deploy; the backend starts only if it succeeds.
-  migrate:
+  giobby-migrate:
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -36,16 +36,16 @@ services:
       MIGRATION_APP_ROLE: ${MIGRATION_APP_ROLE:?}
     logging: *logging
 
-  # Named giobby-backend, not backend: with "Connect To Predefined Network" the
-  # services share Coolify's network with other stacks, where a generic name could
-  # resolve to someone else's container.
+  # Every service is named giobby-*: with "Connect To Predefined Network" the services
+  # share Coolify's network with other stacks, where a generic name could resolve to
+  # someone else's container.
   giobby-backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     restart: unless-stopped
     depends_on:
-      migrate:
+      giobby-migrate:
         condition: service_completed_successfully
     environment:
       SERVER_PORT: "8080"
@@ -72,7 +72,7 @@ services:
     logging: *logging
 
   # API Explorer UI; also proxies /api/, /health and /healthz to the backend.
-  api-explorer:
+  giobby-api-explorer:
     build: ./api-explorer
     restart: unless-stopped
     depends_on:
