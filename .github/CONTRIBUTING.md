@@ -41,6 +41,14 @@ feat/… fix/… chore/… docs/…  ──PR──▶  dev  ──PR──▶  
   con una nuova PR.
 - Mai `git push --force` su questi branch, mai `--no-verify` per aggirare l'hook.
 
+## Project "Giobby API"
+
+Le attività stanno nel project https://github.com/orgs/Cloud4Job/projects/4: Backlog → Todo → In progress
+→ Review → **Test** (in produzione, issue assegnata al frontend) → **Done** (il frontend ha testato e chiuso
+la issue). Nei commit e nelle PR le issue si citano con **`Refs #n`**, mai `Closes #n`. "Stima (h)" si
+compila a mano; "Effettivo (h)" lo calcola il workflow `project-effort.yml` (ore lavorative lun–ven 9–18,
+da In progress a Test) con il segreto `PROJECT_TOKEN`.
+
 ## Database
 
 Lo schema cambia solo con **nuove migrazioni** in `backend/internal/db/migrations/`: un nuovo file
