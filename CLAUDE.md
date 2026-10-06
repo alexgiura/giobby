@@ -167,6 +167,11 @@ scripts/check-prod-compose.sh             # controllo del compose di produzione
 - **Servizi di produzione**: tutti con il prefisso `giobby-` (`giobby-migrate`, `giobby-backend`,
   `giobby-api-explorer`) per la rete condivisa di Coolify; lo verifica `scripts/check-prod-compose.sh`.
   Il proxy dell'API Explorer usa `BACKEND_HOST`, mai un nome generico.
+- **Issue e project "Giobby API"**: nei commit e nelle PR le issue si citano con `Refs #n`, **mai**
+  `Closes #n` (al rilascio su `main` chiuderebbe la issue saltando il test). La issue la chiude solo il
+  frontend dopo il test in produzione; flusso completo in `.github/CONTRIBUTING.md`.
+- **Branch**: non eliminarli a mano dopo il merge. Li cancella `branch-cleanup.yml` quando la PR è
+  mergiata e tutte le issue citate sono chiuse.
 - **Segreti**: solo in Coolify, "Not available during build"; `backend/.env` è solo locale e
   ignorato da git.
 <!-- /project -->

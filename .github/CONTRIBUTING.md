@@ -26,9 +26,10 @@ feat/… fix/… chore/… docs/…  ──PR──▶  dev  ──PR──▶  
    attribuzione AI (`Co-Authored-By` di agenti, "Generated with…").
 3. **Verifiche locali** con i comandi dello stack (formattazione, lint, test) in Docker.
 4. **Push del branch** (mai di `dev`, `main` o `release`) e **pull request verso `dev`**: cosa
-   cambia, perché (`Closes #<n>`), verifiche fatte, punti da guardare.
-5. **CI verde** e **review** di un'altra persona, poi merge dalla pagina della PR ed eliminazione
-   del branch.
+   cambia, perché (`Refs #<n>`), verifiche fatte, punti da guardare.
+5. **CI verde** e **review** di un'altra persona, poi merge dalla pagina della PR. Il branch **non** si
+   elimina a mano: lo cancella il workflow **Pulizia branch** quando la PR è mergiata e tutte le issue
+   citate con `Refs #n` sono chiuse (cioè dopo il test in produzione).
 6. **Rilascio**: pull request `dev` → `main`. Dopo il merge la CI gira su `main` e, solo se è verde
    e il commit è il merge di una PR, porta `release` al commit di `main`; il deploy parte da `release`.
 
@@ -47,7 +48,9 @@ Le attività stanno nel project https://github.com/orgs/Cloud4Job/projects/4: Ba
 → Review → **Test** (in produzione, issue assegnata al frontend) → **Done** (il frontend ha testato e chiuso
 la issue). Nei commit e nelle PR le issue si citano con **`Refs #n`**, mai `Closes #n`. "Stima (h)" si
 compila a mano; "Effettivo (h)" lo calcola il workflow `project-effort.yml` (ore lavorative lun–ven 9–18,
-da In progress a Test) con il segreto `PROJECT_TOKEN`.
+da In progress a Test) con il segreto `PROJECT_TOKEN`. Quando la issue viene chiusa, il workflow
+`branch-cleanup.yml` elimina i branch mergiati che la citavano (mai `dev`, `main`, `release`, né branch
+con commit dopo il merge o con una PR ancora aperta).
 
 ## Database
 

@@ -12,7 +12,8 @@ description: Apre una pull request con la descrizione standard Cloud4Job — ver
 3. **Issue**: chiedi o ricava dal nome del branch l'issue collegata.
 4. **Descrizione** (in italiano):
    - **Cosa cambia** — elenco puntato dei cambiamenti;
-   - **Perché** — con `Closes #<n>`;
+   - **Perché** — con `Refs #<n>`, mai `Closes #<n>`: la issue la chiude il frontend dopo il test
+     in produzione (vedi la sezione Progetto di `CLAUDE.md`);
    - **Verifiche fatte** — comandi lanciati e esito; cosa non è stato verificato;
    - **Punti da guardare** — rischi, scelte da validare, effetti sul deploy.
    Nessuna attribuzione AI (niente "Generated with", niente `Co-Authored-By`).

@@ -1,0 +1,36 @@
+name: Pulizia branch
+
+# Deletes work branches once their PR is merged and every issue it references with
+# "Refs #n" is closed (.github/scripts/branch_cleanup.py). Issues are closed by the
+# frontend after the test in production, so a branch stays until its work is verified.
+
+on:
+  issues:
+    types: [closed]
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+  issues: read
+
+concurrency:
+  group: branch-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+      - name: Delete merged branches whose issues are closed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker run --rm -e GITHUB_TOKEN -e GITHUB_REPOSITORY \
+            -v "$PWD":/src -w /src/.github/scripts python:3.12.7-slim python branch_cleanup.py
