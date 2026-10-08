@@ -194,7 +194,28 @@
                 "value": "Bearer {{accessToken}}"
               }
             ],
-            "url": "{{baseUrl}}/countries"
+            "url": "{{baseUrl}}/countries?limit=50&offset=0&description=&showDeleted=false"
+          }
+        },
+        {
+          "name": "POST /countries",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/countries",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"DE\",\n  \"description\": \"Germania\"\n}"
+            }
           }
         },
         {
@@ -207,7 +228,54 @@
                 "value": "Bearer {{accessToken}}"
               }
             ],
-            "url": "{{baseUrl}}/countries/1"
+            "url": "{{baseUrl}}/countries/DE"
+          }
+        },
+        {
+          "name": "PUT /countries/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/countries/DE",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"DE\",\n  \"description\": \"Germania\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE /countries/{id}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/countries/DE"
+          }
+        },
+        {
+          "name": "PATCH /countries/{id}/recover",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/countries/DE/recover"
           }
         },
         {

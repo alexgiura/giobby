@@ -105,6 +105,7 @@ type SecurityScheme struct {
 var tagOrder = []string{
 	"Health",
 	"Auth",
+	"Country",
 	"Reference",
 	"Company",
 	"Contacts",
@@ -137,7 +138,7 @@ var segmentToTag = map[string]string{
 	"healthz":             "Health",
 	"health":              "Health",
 	"auth":                "Auth",
-	"countries":           "Reference",
+	"countries":           "Country",
 	"cities":              "Reference",
 	"currencies":          "Reference",
 	"um":                  "Reference",
@@ -336,8 +337,10 @@ func tagDescription(name string) string {
 		return "Liveness probes"
 	case "Auth":
 		return "JWT register, login, refresh, logout, and profile"
+	case "Country":
+		return "Countries"
 	case "Reference":
-		return "Countries, cities, currencies, UM, payment terms"
+		return "Cities, currencies, UM, payment terms"
 	case "Company":
 		return "Company profile and company settings"
 	case "Warehouse":

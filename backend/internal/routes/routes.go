@@ -29,9 +29,15 @@ func RegisterRoutes(appServices *services.AppServices, cfg *config.Config) http.
 	api.HandleFunc("/auth/logout", authHandler.Logout).Methods(http.MethodPost)
 	api.HandleFunc("/auth/me", authHandler.Me).Methods(http.MethodGet)
 
+	country := handlers.NewCountryHandler(appServices.Country)
+	api.HandleFunc("/countries", country.List).Methods(http.MethodGet)
+	api.HandleFunc("/countries", country.Create).Methods(http.MethodPost)
+	api.HandleFunc("/countries/{id}/recover", country.Recover).Methods(http.MethodPatch)
+	api.HandleFunc("/countries/{id}", country.Get).Methods(http.MethodGet)
+	api.HandleFunc("/countries/{id}", country.Update).Methods(http.MethodPut)
+	api.HandleFunc("/countries/{id}", country.Delete).Methods(http.MethodDelete)
+
 	ref := handlers.NewReferenceHandler(appServices.Reference)
-	api.HandleFunc("/countries", ref.ListCountries).Methods(http.MethodGet)
-	api.HandleFunc("/countries/{id}", ref.GetCountry).Methods(http.MethodGet)
 	api.HandleFunc("/cities", ref.ListCities).Methods(http.MethodGet)
 	api.HandleFunc("/cities", ref.CreateCity).Methods(http.MethodPost)
 	api.HandleFunc("/currencies", ref.ListCurrencies).Methods(http.MethodGet)

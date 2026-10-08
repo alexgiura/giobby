@@ -11,9 +11,6 @@ import (
 
 // ReferenceService handles reference/lookup data.
 type ReferenceService interface {
-	ListCountries(ctx context.Context, q models.CountryListQuery) ([]models.Country, error)
-	GetCountry(ctx context.Context, id string) (*models.Country, error)
-
 	ListCities(ctx context.Context, q models.CityListQuery) ([]models.City, error)
 	CreateCity(ctx context.Context, city models.City) (*models.City, error)
 
@@ -40,18 +37,6 @@ type referenceService struct {
 
 func NewReferenceService(repo repository.ReferenceRepository) ReferenceService {
 	return &referenceService{repo: repo}
-}
-
-func (s *referenceService) ListCountries(ctx context.Context, q models.CountryListQuery) ([]models.Country, error) {
-	return s.repo.ListCountries(ctx, q)
-}
-
-func (s *referenceService) GetCountry(ctx context.Context, id string) (*models.Country, error) {
-	id = strings.TrimSpace(id)
-	if id == "" {
-		return nil, fmt.Errorf("country id is required")
-	}
-	return s.repo.GetCountry(ctx, id)
 }
 
 func (s *referenceService) ListCities(ctx context.Context, q models.CityListQuery) ([]models.City, error) {

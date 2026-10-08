@@ -19,33 +19,6 @@ func NewReferenceHandler(svc services.ReferenceService) *ReferenceHandler {
 	return &ReferenceHandler{svc: svc}
 }
 
-func (h *ReferenceHandler) ListCountries(w http.ResponseWriter, r *http.Request) {
-	limit, offset := parseLimitOffset(r)
-	items, err := h.svc.ListCountries(r.Context(), models.CountryListQuery{
-		ListQuery:   models.ListQuery{Limit: limit, Offset: offset},
-		Description: r.URL.Query().Get("description"),
-	})
-	if err != nil {
-		h.respondDBError(w, err)
-		return
-	}
-	writeJSONArray(w, http.StatusOK, items)
-}
-
-func (h *ReferenceHandler) GetCountry(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	item, err := h.svc.GetCountry(r.Context(), id)
-	if err != nil {
-		h.respondDBError(w, err)
-		return
-	}
-	if item == nil {
-		respondWithError(w, http.StatusNotFound, ErrCodeNotFound, "Country not found", "")
-		return
-	}
-	writeJSON(w, http.StatusOK, item)
-}
-
 func (h *ReferenceHandler) ListCities(w http.ResponseWriter, r *http.Request) {
 	limit, offset := parseLimitOffset(r)
 	items, err := h.svc.ListCities(r.Context(), models.CityListQuery{

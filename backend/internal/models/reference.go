@@ -1,11 +1,5 @@
 package models
 
-// Country matches swagger country resource (id = ISO code).
-type Country struct {
-	ID          string `json:"id"`
-	Description string `json:"description"`
-}
-
 // City matches swagger CityApi (+ id from DB).
 type City struct {
 	ID      int32  `json:"id,omitempty"`
@@ -68,11 +62,6 @@ type PaymentTermPos struct {
 type ListQuery struct {
 	Limit  int
 	Offset int
-}
-
-type CountryListQuery struct {
-	ListQuery
-	Description string
 }
 
 type CityListQuery struct {

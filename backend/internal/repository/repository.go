@@ -7,6 +7,7 @@ import (
 // Repository holds all repository interfaces.
 type Repository struct {
 	Auth                AuthRepository
+	Country             CountryRepository
 	Reference           ReferenceRepository
 	Company             CompanyRepository
 	Contact             ContactRepository
@@ -39,6 +40,7 @@ func NewRepository(db *pgxpool.Pool) *Repository {
 	contacts := NewContactRepository(db)
 	return &Repository{
 		Auth:                NewAuthRepository(db),
+		Country:             NewCountryRepository(db),
 		Reference:           NewReferenceRepository(db),
 		Company:             NewCompanyRepository(db),
 		Contact:             contacts,

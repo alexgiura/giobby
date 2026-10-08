@@ -8,6 +8,7 @@ import (
 // AppServices holds all service interfaces.
 type AppServices struct {
 	Auth                AuthService
+	Country             CountryService
 	Reference           ReferenceService
 	Company             CompanyService
 	Contact             ContactService
@@ -44,6 +45,7 @@ func NewAppServices(repos *repository.Repository, cfg *config.Config) *AppServic
 			cfg.AccessTokenTTL(),
 			cfg.RefreshTokenTTL(),
 		),
+		Country:             NewCountryService(repos.Country),
 		Reference:           NewReferenceService(repos.Reference),
 		Company:             NewCompanyService(repos.Company),
 		Contact:             NewContactService(repos.Contact),

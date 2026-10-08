@@ -5,91 +5,115 @@
     "title" : "Giobby API"
   },
   "tags" : [ {
-    "name" : "CompanySettings"
-  }, {
-    "name" : "Crm"
-  }, {
-    "name" : "Company"
-  }, {
-    "name" : "Message"
-  }, {
-    "name" : "Attribute"
-  }, {
-    "name" : "Storage"
-  }, {
-    "name" : "Product"
-  }, {
-    "name" : "Vendor"
-  }, {
-    "name" : "MachineDataTracking"
-  }, {
-    "name" : "Tilby Settings"
-  }, {
-    "name" : "Contact"
-  }, {
-    "name" : "Tilby"
-  }, {
-    "name" : "ContactRole"
-  }, {
-    "name" : "City"
-  }, {
-    "name" : "Um"
-  }, {
-    "name" : "Tilby Sales"
-  }, {
-    "name" : "Accounting"
-  }, {
-    "name" : "ProductGroup"
-  }, {
-    "name" : "GlobalNotification"
-  }, {
-    "name" : "Pricelist"
-  }, {
-    "name" : "PersonalActivity"
-  }, {
-    "name" : "Settings"
-  }, {
-    "name" : "Task"
-  }, {
-    "name" : "SaleDocument"
-  }, {
-    "name" : "MessageGroups"
-  }, {
-    "name" : "RepoFile"
-  }, {
-    "name" : "Email"
-  }, {
-    "name" : "Calendar"
-  }, {
-    "name" : "Currency"
+    "name" : "Social"
   }, {
     "name" : "StorageLocation"
   }, {
-    "name" : "PuchaseDocument"
-  }, {
-    "name" : "Plugin"
-  }, {
-    "name" : "Stock"
-  }, {
     "name" : "RepoMedia"
+  }, {
+    "name" : "SaleDocument"
+  }, {
+    "name" : "OfficeType"
   }, {
     "name" : "Customer"
   }, {
+    "name" : "GoodsAppearanceType"
+  }, {
     "name" : "Ecommerce"
   }, {
-    "name" : "PaymentTerm"
+    "name" : "Crm"
   }, {
-    "name" : "Social"
-  }, {
-    "name" : "User"
+    "name" : "Attribute"
   }, {
     "name" : "Lot"
   }, {
+    "name" : "Stock"
+  }, {
+    "name" : "ProductType"
+  }, {
+    "name" : "Task"
+  }, {
+    "name" : "PersonalActivity"
+  }, {
+    "name" : "Um"
+  }, {
+    "name" : "GlobalNotification"
+  }, {
+    "name" : "Contact"
+  }, {
+    "name" : "Tilby Settings"
+  }, {
+    "name" : "BusinessUnitPoint"
+  }, {
+    "name" : "Email"
+  }, {
+    "name" : "Settings"
+  }, {
+    "name" : "Tilby"
+  }, {
+    "name" : "Accounting"
+  }, {
+    "name" : "DeliveryChargeTo"
+  }, {
+    "name" : "PuchaseDocument"
+  }, {
+    "name" : "DeliveredByType"
+  }, {
+    "name" : "Vendor"
+  }, {
+    "name" : "ProductGroup"
+  }, {
+    "name" : "Storage"
+  }, {
+    "name" : "CompanySettings"
+  }, {
+    "name" : "Plugin"
+  }, {
+    "name" : "RepoFile"
+  }, {
+    "name" : "CustomerType"
+  }, {
+    "name" : "BusinessUnit"
+  }, {
+    "name" : "City"
+  }, {
+    "name" : "User"
+  }, {
+    "name" : "Product"
+  }, {
+    "name" : "Calendar"
+  }, {
+    "name" : "PaymentType"
+  }, {
+    "name" : "MessageGroups"
+  }, {
+    "name" : "Message"
+  }, {
+    "name" : "MachineDataTracking"
+  }, {
+    "name" : "EInvoice"
+  }, {
+    "name" : "ProcurementType"
+  }, {
+    "name" : "PaymentTerm"
+  }, {
+    "name" : "Pricelist"
+  }, {
     "name" : "Country"
+  }, {
+    "name" : "BizType"
   }, {
     "name" : "LoggedUser"
   }, {
-    "name" : "OfficeType"
+    "name" : "Company"
+  }, {
+    "name" : "Currency"
+  }, {
+    "name" : "Tilby Sales"
+  }, {
+    "name" : "ContactRole"
+  }, {
+    "name" : "DeliveryReasonType"
   } ],
   "paths" : {
     "/accounting/accountmovements" : {
@@ -370,6 +394,621 @@
         }
       }
     },
+    "/biztype" : {
+      "get" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Returns the biz type list",
+        "description" : "",
+        "operationId" : "getAllBizTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "macroarea",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "category",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "workactivity",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Create a new biz type",
+        "description" : "",
+        "operationId" : "createBizType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BizTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/biztype/{id}" : {
+      "get" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Return the biz type by id",
+        "description" : "",
+        "operationId" : "getBizType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Update the biz type",
+        "description" : "",
+        "operationId" : "updateBizType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BizTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/biztype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Delete the biz type",
+        "description" : "",
+        "operationId" : "deleteBizType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/biztype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "BizType" ],
+        "summary" : "Recover the deleted biz type",
+        "description" : "",
+        "operationId" : "recoverBizType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunit" : {
+      "get" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Returns the Business Unit List",
+        "description" : "",
+        "operationId" : "getAllBUs",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idBU",
+          "in" : "query",
+          "description" : "query filter on idBU",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDisabled",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Create a New Business Unit",
+        "description" : "",
+        "operationId" : "createBU",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BuApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunit/{idBu}" : {
+      "get" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Return a Business Unit by ID",
+        "description" : "",
+        "operationId" : "getBU",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Update the Business Unit",
+        "description" : "",
+        "operationId" : "updateBU",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BuApi"
+          }
+        }, {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Delete the Business Unit",
+        "description" : "",
+        "operationId" : "deleteBU",
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunit/{idBu}/enable" : {
+      "patch" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Enable the Business Unit",
+        "description" : "",
+        "operationId" : "enableBU",
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunit/{idBu}/storage" : {
+      "get" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Returns the Business Unit Storage List",
+        "description" : "",
+        "operationId" : "getAllBuStorages",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idBU",
+          "in" : "query",
+          "description" : "query filter on idBU",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idStorage",
+          "in" : "query",
+          "description" : "query filter on idStorage",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Create a New Storage for Business Unit",
+        "description" : "",
+        "operationId" : "createBuStorage",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BupStorageApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunit/{idBu}/storage/{idStorage}" : {
+      "delete" : {
+        "tags" : [ "BusinessUnit" ],
+        "summary" : "Delete the Storage of Business Unit",
+        "description" : "",
+        "operationId" : "deleteBuStorage",
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "idStorage",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunitpoint" : {
+      "get" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Returns the Business Unit Point List",
+        "description" : "",
+        "operationId" : "getAllBUPs",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idBUP",
+          "in" : "query",
+          "description" : "query filter on idBup",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDisabled",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Create a new Business Unit Point",
+        "description" : "",
+        "operationId" : "createBUP",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BupApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunitpoint/{idBup}" : {
+      "get" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Return a Business Unit Point by ID",
+        "description" : "",
+        "operationId" : "getBUP",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBup",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Update the Business Unit Point",
+        "description" : "",
+        "operationId" : "updateBUP",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BupApi"
+          }
+        }, {
+          "name" : "idBup",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Delete the Business Unit Point",
+        "description" : "",
+        "operationId" : "deleteBUP",
+        "parameters" : [ {
+          "name" : "idBup",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunitpoint/{idBup}/enable" : {
+      "patch" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Enable the Business Unit Point",
+        "description" : "",
+        "operationId" : "enableBUP",
+        "parameters" : [ {
+          "name" : "idBup",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunitpoint/{idBup}/storage" : {
+      "get" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Returns the Business Unit Storage List",
+        "description" : "",
+        "operationId" : "getAllBupStorages",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idBUP",
+          "in" : "query",
+          "description" : "query filter on idBUP",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idStorage",
+          "in" : "query",
+          "description" : "query filter on idStorage",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Create a New Storage for Business Unit Point",
+        "description" : "",
+        "operationId" : "createBupStorage",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/BupStorageApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/businessunitpoint/{idBup}/storage/{idStorage}" : {
+      "delete" : {
+        "tags" : [ "BusinessUnitPoint" ],
+        "summary" : "Delete the Storage of Business Unit Point",
+        "description" : "",
+        "operationId" : "deleteBupStorage",
+        "parameters" : [ {
+          "name" : "idBup",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "idStorage",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/calendars" : {
       "get" : {
         "tags" : [ "Calendar" ],
@@ -559,6 +1198,23 @@
           "description" : "query filter on name",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "zip",
+          "in" : "query",
+          "description" : "query filter on zip",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "query",
+          "description" : "query filter on country",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
         } ],
         "responses" : {
           "default" : {
@@ -580,6 +1236,133 @@
           "schema" : {
             "$ref" : "#/definitions/CityApi"
           }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/cities/{name}" : {
+      "get" : {
+        "tags" : [ "City" ],
+        "summary" : "Return a city by name",
+        "description" : "",
+        "operationId" : "getCity",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "zip",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/cities/{name}/{zip}/{country}" : {
+      "put" : {
+        "tags" : [ "City" ],
+        "summary" : "Update the city",
+        "description" : "",
+        "operationId" : "updateCity",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CityApi"
+          }
+        }, {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "zip",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "City" ],
+        "summary" : "Delete the city",
+        "description" : "",
+        "operationId" : "deleteCity",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        }, {
+          "name" : "zip",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/cities/{name}/{zip}/{country}/recover" : {
+      "patch" : {
+        "tags" : [ "City" ],
+        "summary" : "Recover the deleted city",
+        "description" : "",
+        "operationId" : "recoverCity",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        }, {
+          "name" : "zip",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
         } ],
         "responses" : {
           "default" : {
@@ -951,6 +1734,66 @@
         }
       }
     },
+    "/companysettings/currencychange" : {
+      "get" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Returns the the currency exchange list",
+        "description" : "",
+        "operationId" : "getAllCurrencyChanges",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "source",
+          "in" : "query",
+          "description" : "query filter on source",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "date",
+          "in" : "query",
+          "description" : "query filter on date",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Create a new currency exchange",
+        "description" : "",
+        "operationId" : "createCurrencyChange",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CurrencyChangeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/companysettings/currencychange/{idSourceCurr}" : {
       "get" : {
         "tags" : [ "CompanySettings" ],
@@ -968,6 +1811,195 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/companysettings/currencychange/{source}/{date}" : {
+      "put" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Update the currency exchange",
+        "description" : "",
+        "operationId" : "updateCurrencyChange",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CurrencyChangeApi"
+          }
+        }, {
+          "name" : "source",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "date",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Delete the currency exchange",
+        "description" : "",
+        "operationId" : "deleteCurrencyChange",
+        "parameters" : [ {
+          "name" : "source",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        }, {
+          "name" : "date",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/companysettings/docnumerator" : {
+      "get" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Returns all document numerators",
+        "description" : "",
+        "operationId" : "getAllDocNumerators",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idDocumentType",
+          "in" : "query",
+          "description" : "see the documentation at the reference page on the idDocumentType tab",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idNumerator",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "year",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Update an existing document numerator",
+        "description" : "",
+        "operationId" : "updateDocNumerator",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocNumerator"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/companysettings/docnumeratordaily" : {
+      "get" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Returns all daily document numerators",
+        "description" : "",
+        "operationId" : "getAllDocNumeratorsDaily",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idDocumentType",
+          "in" : "query",
+          "description" : "see the documentation at the reference page on the idDocumentType tab",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "idNumerator",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "date",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "CompanySettings" ],
+        "summary" : "Update an existing document numerator",
+        "description" : "",
+        "operationId" : "updateDocNumeratorDaily",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocNumeratorDaily"
+          }
         } ],
         "responses" : {
           "default" : {
@@ -1609,7 +2641,7 @@
     "/contactsroles" : {
       "get" : {
         "tags" : [ "ContactRole" ],
-        "summary" : "Restituisce la Lista ruolo contatto",
+        "summary" : "Returns the contact role list",
         "description" : "",
         "operationId" : "getAllContactsRoles",
         "produces" : [ "application/json" ],
@@ -1630,6 +2662,122 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "ContactRole" ],
+        "summary" : "Create a new contact role",
+        "description" : "",
+        "operationId" : "createContactRole",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ContactRoleApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/contactsroles/{id}" : {
+      "get" : {
+        "tags" : [ "ContactRole" ],
+        "summary" : "Returns the contact role by id",
+        "description" : "",
+        "operationId" : "getContactRole",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "ContactRole" ],
+        "summary" : "Update the contact role",
+        "description" : "",
+        "operationId" : "updateContactRole",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ContactRoleApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/contactsroles/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "ContactRole" ],
+        "summary" : "Delete the contact role",
+        "description" : "",
+        "operationId" : "deleteContactRole",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/contactsroles/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "ContactRole" ],
+        "summary" : "Recover the deleted contact role",
+        "description" : "",
+        "operationId" : "recoverContactRole",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
         } ],
         "responses" : {
           "default" : {
@@ -1641,7 +2789,7 @@
     "/countries" : {
       "get" : {
         "tags" : [ "Country" ],
-        "summary" : "Restituisce la lista delle Nazioni",
+        "summary" : "Returns the countries list",
         "description" : "",
         "operationId" : "getAllCountries",
         "produces" : [ "application/json" ],
@@ -1662,6 +2810,32 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Country" ],
+        "summary" : "Create a new country",
+        "description" : "",
+        "operationId" : "createCountry",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CountryApi"
+          }
         } ],
         "responses" : {
           "default" : {
@@ -1673,7 +2847,7 @@
     "/countries/{id}" : {
       "get" : {
         "tags" : [ "Country" ],
-        "summary" : "Restituisce una Nazione",
+        "summary" : "Returns a country by id",
         "description" : "",
         "operationId" : "getCountry",
         "produces" : [ "application/json" ],
@@ -1681,7 +2855,72 @@
           "name" : "id",
           "in" : "path",
           "required" : true,
-          "type" : "string"
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Country" ],
+        "summary" : "Update the country",
+        "description" : "",
+        "operationId" : "updateCountry",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CountryApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Country" ],
+        "summary" : "Delete the country",
+        "description" : "",
+        "operationId" : "deleteCountry",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/countries/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "Country" ],
+        "summary" : "Recover the deleted country",
+        "description" : "",
+        "operationId" : "recoverCountry",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : " (.+)?"
         } ],
         "responses" : {
           "default" : {
@@ -2255,7 +3494,7 @@
     "/currencies" : {
       "get" : {
         "tags" : [ "Currency" ],
-        "summary" : "Restituisce la lista delle Valute",
+        "summary" : "Returns the list of currencies",
         "description" : "",
         "operationId" : "getAllCurrencies",
         "produces" : [ "application/json" ],
@@ -2277,15 +3516,78 @@
             "description" : "successful operation"
           }
         }
+      },
+      "post" : {
+        "tags" : [ "Currency" ],
+        "summary" : "Create a new currency",
+        "description" : "",
+        "operationId" : "createCountry",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CurrencyApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
       }
     },
     "/currencies/{code}" : {
       "get" : {
         "tags" : [ "Currency" ],
-        "summary" : "Restituisce una Valuta",
+        "summary" : "Returns the currency",
         "description" : "",
         "operationId" : "getCurrency",
         "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "code",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Currency" ],
+        "summary" : "Update the currency",
+        "description" : "",
+        "operationId" : "updateCurrency",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CurrencyApi"
+          }
+        }, {
+          "name" : "code",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Currency" ],
+        "summary" : "Delete the currency",
+        "description" : "",
+        "operationId" : "deleteCurrency",
         "parameters" : [ {
           "name" : "code",
           "in" : "path",
@@ -2382,6 +3684,96 @@
           "schema" : {
             "$ref" : "#/definitions/CustomerApi"
           }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/customers/{idCustomer}/quota" : {
+      "get" : {
+        "tags" : [ "Customer" ],
+        "summary" : "Get customer quota",
+        "description" : "",
+        "operationId" : "getCustomerQuota",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idCustomer",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Customer" ],
+        "summary" : "Creates or updates customer quota",
+        "description" : "",
+        "operationId" : "upsertCustomerQuota",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idCustomer",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/CustomerQuota"
+            }
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/customers/{idCustomer}/quota/{idMaterial}" : {
+      "delete" : {
+        "tags" : [ "Customer" ],
+        "summary" : "Deletes a customer quota",
+        "description" : "",
+        "operationId" : "deleteCustomerQuota",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idCustomer",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "idMaterial",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
         } ],
         "responses" : {
           "default" : {
@@ -2512,6 +3904,598 @@
         }
       }
     },
+    "/customertype" : {
+      "get" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Returns the list of customer types",
+        "description" : "",
+        "operationId" : "getAllCustomerTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showdeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Create a new customer type",
+        "description" : "",
+        "operationId" : "createCustomerType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CustomerTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/customertype/{id}" : {
+      "get" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Returns the customer type by id",
+        "description" : "",
+        "operationId" : "getCustomerType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Update the customer type",
+        "description" : "",
+        "operationId" : "updateCustomerType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/CustomerTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/customertype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Delete the customer type",
+        "description" : "",
+        "operationId" : "deleteCustomerType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/customertype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "CustomerType" ],
+        "summary" : "Recover the deleted customer type",
+        "description" : "",
+        "operationId" : "recoverCustomerType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveredbytype" : {
+      "get" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Returns the shipping via list",
+        "description" : "",
+        "operationId" : "getAllDeliveredByTypeList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Create a new shipping via",
+        "description" : "",
+        "operationId" : "createDeliveredByType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveredByTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveredbytype/{id}" : {
+      "get" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Returns the shipping via by id",
+        "description" : "",
+        "operationId" : "getDeliveredByType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Update the shipping via",
+        "description" : "",
+        "operationId" : "updateDeliveredByType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveredByTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveredbytype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Delete the shipping via",
+        "description" : "",
+        "operationId" : "deleteDeliveredByType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveredbytype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "DeliveredByType" ],
+        "summary" : "Recover the deleted shipping via",
+        "description" : "",
+        "operationId" : "recoverDeliveredByType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliverychargeto" : {
+      "get" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Returns the shipping charge list",
+        "description" : "",
+        "operationId" : "getAllDeliveryChargeToList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Create a new shipping charge",
+        "description" : "",
+        "operationId" : "createDeliveryChargeTo",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveryChargeToApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliverychargeto/{id}" : {
+      "get" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Returns the shipping charge by id",
+        "description" : "",
+        "operationId" : "getDeliveryChargeTo",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Update the shipping charge",
+        "description" : "",
+        "operationId" : "updateDeliveryChargeTo",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveryChargeToApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliverychargeto/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Delete the shipping charge",
+        "description" : "",
+        "operationId" : "deleteDeliveryChargeTo",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliverychargeto/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "DeliveryChargeTo" ],
+        "summary" : "Recover the deleted shipping charge",
+        "description" : "",
+        "operationId" : "recoverDeliveryChargeTo",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveryreasontype" : {
+      "get" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Returns the delivery reason type list",
+        "description" : "",
+        "operationId" : "getAllDeliveryReasonTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Create a new delivery reason type",
+        "description" : "",
+        "operationId" : "createDeliveryReasonType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveryReasonTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveryreasontype/{id}" : {
+      "get" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Returns the delivery reason type by id",
+        "description" : "",
+        "operationId" : "getDeliveryReasonType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Update the delivery reason type",
+        "description" : "",
+        "operationId" : "updateDeliveryReasonType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DeliveryReasonTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveryreasontype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Delete the delivery reason type",
+        "description" : "",
+        "operationId" : "deleteDeliveryReasonType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/deliveryreasontype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "DeliveryReasonType" ],
+        "summary" : "Recover the deleted delivery reason type",
+        "description" : "",
+        "operationId" : "recoverDeliveryReasonType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/ecommerce/notifies" : {
       "get" : {
         "tags" : [ "Ecommerce" ],
@@ -2596,6 +4580,317 @@
         }
       }
     },
+    "/einvoice/active/list" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Active EInvoices List",
+        "description" : "",
+        "operationId" : "getActiveEInvoices",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "docStatus",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/active/{idArchivium}/notifications" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get notifications for Active EInvoice",
+        "description" : "",
+        "operationId" : "getActiveEInvoiceNotifications",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/active/{idArchivium}/p7m" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Active EInvoice P7M",
+        "description" : "",
+        "operationId" : "downloadActiveEInvoiceP7M",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/active/{idArchivium}/pdf" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Active EInvoice PDF",
+        "description" : "",
+        "operationId" : "downloadActiveEInvoicePDF",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/active/{idArchivium}/xml" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Active EInvoice XML",
+        "description" : "",
+        "operationId" : "downloadActiveEInvoiceXML",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/active/{idDocType}/{id}" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get EInvoice XML from repofile",
+        "description" : "",
+        "operationId" : "getRepofileXML",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idDocType",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/list" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Passive EInvoices List",
+        "description" : "",
+        "operationId" : "getPassiveEInvoices",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "docStatus",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/{idArchivium}/notifications" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get notifications for Passive EInvoice",
+        "description" : "",
+        "operationId" : "getPassiveEInvoiceNotifications",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/{idArchivium}/p7m" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Passive EInvoice P7M",
+        "description" : "",
+        "operationId" : "downloadPassiveEInvoiceP7M",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/{idArchivium}/pdf" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Pasive EInvoice PDF",
+        "description" : "",
+        "operationId" : "downloadPasiveEInvoicePDF",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/{idArchivium}/xml" : {
+      "get" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Get Pasive EInvoice XML",
+        "description" : "",
+        "operationId" : "downloadPasiveEInvoiceXML",
+        "produces" : [ "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "idArchivium",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/einvoice/passive/{idBu}/sync" : {
+      "post" : {
+        "tags" : [ "EInvoice" ],
+        "summary" : "Sync Passive EInvoices from Archivium",
+        "description" : "",
+        "operationId" : "syncPassiveEInvoices",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/emails" : {
       "get" : {
         "tags" : [ "Email" ],
@@ -2620,6 +4915,154 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/goodsappearancetype" : {
+      "get" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Returns the goods appearance type list",
+        "description" : "",
+        "operationId" : "getAllGoodsAppearanceTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Create a new goods appearance type",
+        "description" : "",
+        "operationId" : "createGoodsAppearanceType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/GoodsAppearanceTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/goodsappearancetype/{id}" : {
+      "get" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Returns the goods appearance type by id",
+        "description" : "",
+        "operationId" : "getGoodsAppearanceType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Update the goods appearance type",
+        "description" : "",
+        "operationId" : "updateGoodsAppearancetType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/GoodsAppearanceTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/goodsappearancetype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Delete the goods appearance type",
+        "description" : "",
+        "operationId" : "deleteGoodsAppearanceType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/goodsappearancetype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "GoodsAppearanceType" ],
+        "summary" : "Recover the deleted goods appearance type",
+        "description" : "",
+        "operationId" : "recoverGoodsAppearanceType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
+          "format" : "int32"
         } ],
         "responses" : {
           "default" : {
@@ -3425,7 +5868,7 @@
     "/officesType" : {
       "get" : {
         "tags" : [ "OfficeType" ],
-        "summary" : "Restituisce la lista tipo ufficio (sedi contatto)",
+        "summary" : "Returns the list of office types (contact locations)",
         "description" : "",
         "operationId" : "getAllOfficesType",
         "produces" : [ "application/json" ],
@@ -3446,6 +5889,122 @@
           "in" : "query",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "OfficeType" ],
+        "summary" : "Create a new office type",
+        "description" : "",
+        "operationId" : "createOfficeType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/OfficeTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/officesType/{id}" : {
+      "get" : {
+        "tags" : [ "OfficeType" ],
+        "summary" : "Returns the office type by id",
+        "description" : "",
+        "operationId" : "getOfficeType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "OfficeType" ],
+        "summary" : "Update the office type",
+        "description" : "",
+        "operationId" : "updateOfficeType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/OfficeTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/officesType/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "OfficeType" ],
+        "summary" : "Delete the office type",
+        "description" : "",
+        "operationId" : "deleteOfficeType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/officesType/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "OfficeType" ],
+        "summary" : "Recover the deleted office type",
+        "description" : "",
+        "operationId" : "recoverOfficeType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
         } ],
         "responses" : {
           "default" : {
@@ -3457,7 +6016,7 @@
     "/paymentterms" : {
       "get" : {
         "tags" : [ "PaymentTerm" ],
-        "summary" : "Restituisce la lista delle Condizioni di Pagamento con le righe di configurazione",
+        "summary" : "Returns the list of payment terms with the configuration lines.",
         "description" : "",
         "operationId" : "getAllPaymentTerms",
         "produces" : [ "application/json" ],
@@ -3487,8 +6046,8 @@
       },
       "post" : {
         "tags" : [ "PaymentTerm" ],
-        "summary" : "Create a new payment terms",
-        "description" : "Crea una nuova condizione di pagamento con o senza scadenze. Per i tipi di pagamento di default consultare in Reference la tabella paymenettype ",
+        "summary" : "Create a new payment term",
+        "description" : "Creates a new Payment Term with or without payment schedules. For the default payment types, see the paymentType table in the Reference section ",
         "operationId" : "createPaymentTerm",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -3510,7 +6069,7 @@
     "/paymentterms/{id}" : {
       "get" : {
         "tags" : [ "PaymentTerm" ],
-        "summary" : "Restituisce una Condizione di Pagamento",
+        "summary" : "Returns the payment term",
         "description" : "",
         "operationId" : "getPaymentTerm",
         "produces" : [ "application/json" ],
@@ -3519,6 +6078,208 @@
           "in" : "path",
           "required" : true,
           "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "PaymentTerm" ],
+        "summary" : "Update the payment term",
+        "description" : "",
+        "operationId" : "updatePaymentTerm",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PaymentTermApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/paymentterms/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "PaymentTerm" ],
+        "summary" : "Delete the payment term",
+        "description" : "",
+        "operationId" : "deletePaymentTerm",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/paymenttype" : {
+      "get" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Returns the payment type list",
+        "description" : "",
+        "operationId" : "getAllPaymentTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "external_Id",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Create a new payment type",
+        "description" : "",
+        "operationId" : "createPaymentType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PaymentTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/paymenttype/{id}" : {
+      "get" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Returns the payment type",
+        "description" : "",
+        "operationId" : "getPaymentType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Update the payment type",
+        "description" : "",
+        "operationId" : "updatePaymentType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PaymentTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/paymenttype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Delete the payment type",
+        "description" : "",
+        "operationId" : "deletePaymentType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/paymenttype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "PaymentType" ],
+        "summary" : "Recover the deleted payment type",
+        "description" : "",
+        "operationId" : "recoverPaymentType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
           "format" : "int32"
         } ],
         "responses" : {
@@ -3675,6 +6436,26 @@
               "type" : "object"
             }
           }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/plugins/archivium/{idBu}/settings" : {
+      "get" : {
+        "tags" : [ "Plugin" ],
+        "summary" : "Get Archivium business unit info",
+        "description" : "",
+        "operationId" : "getArchiviumBuSettings",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idBu",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
         } ],
         "responses" : {
           "default" : {
@@ -3911,6 +6692,154 @@
         }
       }
     },
+    "/procurementtype" : {
+      "get" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Returns the procurement type list",
+        "description" : "",
+        "operationId" : "getAllProcurementTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Create a new procurement type",
+        "description" : "",
+        "operationId" : "createProcurementType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ProcurementTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/procurementtype/{id}" : {
+      "get" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Returns the procurement type by id",
+        "description" : "",
+        "operationId" : "getProcurementType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Update the procurement type",
+        "description" : "",
+        "operationId" : "updateProcurementType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ProcurementTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/procurementtype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Delete the procurement type",
+        "description" : "",
+        "operationId" : "deleteProcurementType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/procurementtype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "ProcurementType" ],
+        "summary" : "Recover the deleted procurement type",
+        "description" : "",
+        "operationId" : "recoverProcurementType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/products" : {
       "get" : {
         "tags" : [ "Product" ],
@@ -3985,7 +6914,7 @@
     "/products/product" : {
       "post" : {
         "tags" : [ "Product" ],
-        "summary" : "Crea un nuovo Prodotto/Servizio",
+        "summary" : "Create new Product/Service",
         "description" : "",
         "operationId" : "createProduct",
         "consumes" : [ "application/json" ],
@@ -4007,7 +6936,7 @@
       },
       "put" : {
         "tags" : [ "Product" ],
-        "summary" : "Aggiorna prodotto",
+        "summary" : "Update a Product/Service",
         "description" : "",
         "operationId" : "updateProduct",
         "consumes" : [ "application/json" ],
@@ -4053,9 +6982,28 @@
     "/products/{id}" : {
       "get" : {
         "tags" : [ "Product" ],
-        "summary" : "Restituisce un Prodotto/Servizio",
+        "summary" : "Get a Product/Service",
         "description" : "",
         "operationId" : "getProduct",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Product" ],
+        "summary" : "Delete a Product/Service",
+        "description" : "",
+        "operationId" : "deleteContact",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "id",
@@ -4126,6 +7074,86 @@
           "required" : false,
           "type" : "integer",
           "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/products/{id}/{idAttributeCombination}/bom" : {
+      "get" : {
+        "tags" : [ "Product" ],
+        "summary" : "Returns a product bom",
+        "description" : "",
+        "operationId" : "getProductBom",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "idAttributeCombination",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "isBackflushing",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Product" ],
+        "summary" : "Upsert a product bom",
+        "description" : "",
+        "operationId" : "upsertProductBom",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "idAttributeCombination",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ProductBomApi"
+            }
+          }
         } ],
         "responses" : {
           "default" : {
@@ -4248,6 +7276,154 @@
           "required" : true,
           "type" : "integer",
           "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/producttype" : {
+      "get" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Returns the product type list",
+        "description" : "",
+        "operationId" : "getAllProductTypes",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "showDeleted",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Create a new product type",
+        "description" : "",
+        "operationId" : "createProductType",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ProductTypeApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/producttype/{id}" : {
+      "get" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Returns the product type by id",
+        "description" : "",
+        "operationId" : "getProductType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Update the product type",
+        "description" : "",
+        "operationId" : "updateProdcutType",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ProductTypeApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/producttype/{id}/delete" : {
+      "delete" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Delete the product type",
+        "description" : "",
+        "operationId" : "deleteProductType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : "(.+)?",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/producttype/{id}/recover" : {
+      "patch" : {
+        "tags" : [ "ProductType" ],
+        "summary" : "Recover the deleted product type",
+        "description" : "",
+        "operationId" : "recoverProductType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "pattern" : " (.+)?",
           "format" : "int32"
         } ],
         "responses" : {
@@ -4423,7 +7599,7 @@
       "post" : {
         "tags" : [ "PuchaseDocument" ],
         "summary" : "Creates a purchase invoice",
-        "description" : "L'array delle rate  \"payments\" è opzionale, se non è passato giobby crea automaticamente le rate in base al Termine di Pagamento \"idPaymentTerm\".\n\nPer creare una riga documento \"Prodotto non codificato\" passare idMaterial a null.\n\nPer creare una riga documento \"Spese e costi di trasporto\" passare idShippingType a -1\n\n Gli sconti sono sempre in valore percentuale e vengono sempre applicati agli importi al netto di IVA.\n\n Gli sconti di testata vanno inseriti nei seguenti attributi e vengono applicati sull’importo dell’intero ordine (sempre al netto di IVA), ma non sui costi di spedizione:\n\n - \"tdsc1\": 0 \n\n - \"tdsc2\": 0 \n\n - \"tdsc3\": 0 \n\n - \"tdsc4\": 0 \n \n\n Gli sconti di riga vanno inseriti nei seguenti attributi (all’interno di “rows” e della relativa riga) e vengono applicati alle signole righe dell’ordine (sempre al netto di IVA), eventualmente anche su un costo di spedizione: \n\n - \"dsc1\": 0 \n\n - \"dsc2\": 0 \n\n - \"dsc3\": 0 \n\n - \"dsc4\": 0 \n",
+        "description" : "L'array delle rate  \"payments\" è opzionale, se non è passato giobby crea automaticamente le rate in base al Termine di Pagamento \"idPaymentTerm\".\n\nPer creare una riga documento \"Prodotto non codificato\" passare idMaterial a null.\n\nPer creare una riga documento \"Spese e costi di trasporto\" passare idShippingType a -1\n\n Gli sconti sono sempre in valore percentuale e vengono sempre applicati agli importi al netto di IVA.\n\n Gli sconti di testata vanno inseriti nei seguenti attributi e vengono applicati sull’importo dell’intero ordine (sempre al netto di IVA), ma non sui costi di spedizione:\n\n - \"tdsc1\": 0 \n\n - \"tdsc2\": 0 \n\n - \"tdsc3\": 0 \n\n - \"tdsc4\": 0 \n \n\n Gli sconti di riga vanno inseriti nei seguenti attributi (all’interno di “rows” e della relativa riga) e vengono applicati alle signole righe dell’ordine (sempre al netto di IVA), eventualmente anche su un costo di spedizione: \n\n - \"dsc1\": 0 \n\n - \"dsc2\": 0 \n\n - \"dsc3\": 0 \n\n - \"dsc4\": 0 \n\n Sono accettati i seguenti idDocumentType: \n\n - \"Fattura di acquisto (Default)\": 8 \n\n - \"Parcella\": 27 \n\n - \"Nota di Credito\": 14 \n\n - \"Nota di Debito\": 15 \n",
         "operationId" : "createPurchaseInvoice",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -4535,10 +7711,84 @@
         }
       }
     },
+    "/purchases/offers" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get the purchase offers' list",
+        "description" : "",
+        "operationId" : "getAllPurchaseOffers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idContact",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create a purchase offer",
+        "description" : "L'array delle rate  \"payments\" è opzionale, se non è passato giobby crea automaticamente le rate in base al Termine di Pagamento \"idPaymentTerm\".\n\nPer creare una riga documento \"Prodotto non codificato\" passare idMaterial a null.\n\nPer creare una riga documento \"Spese e costi di trasporto\" passare idShippingType a -1\n\n Gli sconti sono sempre in valore percentuale e vengono sempre applicati agli importi al netto di IVA.\n\n Gli sconti di testata vanno inseriti nei seguenti attributi e vengono applicati sull’importo dell’intero ordine (sempre al netto di IVA), ma non sui costi di spedizione:\n\n - \"tdsc1\": 0 \n\n - \"tdsc2\": 0 \n\n - \"tdsc3\": 0 \n\n - \"tdsc4\": 0 \n \n\n Gli sconti di riga vanno inseriti nei seguenti attributi (all’interno di “rows” e della relativa riga) e vengono applicati alle signole righe dell’ordine (sempre al netto di IVA), eventualmente anche su un costo di spedizione: \n\n - \"dsc1\": 0 \n\n - \"dsc2\": 0 \n\n - \"dsc3\": 0 \n\n - \"dsc4\": 0 \n",
+        "operationId" : "createPurchaseOffer",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/purchases/orders" : {
       "get" : {
         "tags" : [ "PuchaseDocument" ],
-        "summary" : "Restituisce tutti gli ordini (di acquisto)",
+        "summary" : "Get purchase orders' list",
         "description" : "",
         "operationId" : "getAllPurchaseOrders",
         "produces" : [ "application/json" ],
@@ -4642,6 +7892,81 @@
         }
       }
     },
+    "/purchases/tickets" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get the purchase tickets' list",
+        "description" : "",
+        "operationId" : "getAllTickets",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "description" : "filter on company name",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idContact",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create a purchase ticket",
+        "description" : "",
+        "operationId" : "createPurchaseTicket",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/purchases/vendorpayment" : {
       "get" : {
         "tags" : [ "PuchaseDocument" ],
@@ -4727,6 +8052,81 @@
         }
       }
     },
+    "/purchases/writeoff" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get all purchase writeoffs",
+        "description" : "",
+        "operationId" : "getAllPurchaseTicketsWriteoff",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "description" : "filter on company name",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idContact",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create a purchase writeoff",
+        "description" : "",
+        "operationId" : "createPurchaseWriteoff",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/purchases/{idDoc}/attachment" : {
       "get" : {
         "tags" : [ "PuchaseDocument" ],
@@ -4802,7 +8202,7 @@
       },
       "delete" : {
         "tags" : [ "PuchaseDocument" ],
-        "summary" : "Rimuove un allefagato dal documento",
+        "summary" : "Rimuove un allegato dal documento",
         "description" : "",
         "operationId" : "deletePurchasesAttachment",
         "produces" : [ "application/json" ],
@@ -5055,10 +8455,208 @@
         }
       }
     },
+    "/purchases/{id}/invoicetocreditnote" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create purchase credit note from purchase invoice",
+        "description" : "idNumerator: Id Numerator\n\ndocNumber: Document number\n\ndocDate: Invoice's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)",
+        "operationId" : "purchaseInvoiceToCreditNote",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/offers" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get a purchase offer",
+        "description" : "",
+        "operationId" : "getPurchaseOffer",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "onlyHeaderData",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Edit a purchase offer",
+        "description" : "NOTA BENE: Per modificare una riga del documento esistente mettere nel payload il filed \"idPos\". Se si vuole aggiungere una nuova riga al documento, non passare il field \"idPos\".\n\nIl campo \"idPos\" viene resistuito nel json di risposta nella get del preventivo. \n",
+        "operationId" : "updatePurchaseOffer",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "recalcPayments",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Delete a Purchase offer",
+        "description" : "",
+        "operationId" : "deletePurchaseOffer",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/offerstogoodsreceipt" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create good receipt from purchase offer",
+        "description" : "idNumerator: Id Numerator\n\ndocNumber: Document number\n\ndocDate: Good Receipt's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)\n\nidDocumentTypeExt: Id reason\n\ndestIdStorage: Id destination storage (for transfer reason)\n\ndestIdLocation: Id destination location (for transfer reason)",
+        "operationId" : "purchaseOffersToGoodsReceipt",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/GenerateGoodReceiptIssueApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/offerstoinvoice" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create purchase invoice from purchase offer",
+        "description" : "idNumerator: Id Numerator\n\ndocNumber: Document number\n\ndocDate: Doc Date and Registration Date (in milliseconds from midnight, January 1, 1970)",
+        "operationId" : "purchaseOffersToInvoice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/offerstoorder" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create purchase order from purchase offer",
+        "description" : "idNumerator: Id Numeratore/Sezionale\n\ndocDate: Data Documento (numero di milliseconds da midnight, January 1, 1970)",
+        "operationId" : "purchaseOffersToOrder",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/purchases/{id}/orders" : {
       "get" : {
         "tags" : [ "PuchaseDocument" ],
-        "summary" : "Restituisce un Ordine di acquisto",
+        "summary" : "Get a purchase order",
         "description" : "",
         "operationId" : "getPurchaseOrder",
         "produces" : [ "application/json" ],
@@ -5116,6 +8714,160 @@
             "description" : "successful operation"
           }
         }
+      },
+      "delete" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Delete a purchase order",
+        "description" : "",
+        "operationId" : "deletePurchaseOrder",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/orderstogoodsreceipt" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create good receipt from purchase order",
+        "description" : "idNumerator: Id Numerator\n\ndocNumber: Document number\n\ndocDate: Good Issue's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)\n\nidDocumentTypeExt: Id reason\n\ndestIdStorage: Id destination storage (for transfer reason)\n\ndestIdLocation: Id destination location (for transfer reason)",
+        "operationId" : "purchaseOrdersToGoodsReceipt",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/GenerateGoodReceiptIssueApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/orderstoinvoice" : {
+      "post" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Create purchase invoice from purchase order",
+        "description" : "idNumerator: Id Numerator\n\ndocNumber: Document number\n\ndocDate: Invoice's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)",
+        "operationId" : "purchaseOrdersToInvoice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/tickets" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get a purchase ticket",
+        "description" : "",
+        "operationId" : "getPurchaseTicket",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Update a purchase ticket",
+        "description" : "NOTA BENE: Per modificare una riga del documento esistente mettere nel payload il field \"idPos\". Se si vuole aggiungere una nuova riga al documento, non passare il field \"idPos\".\n\nIl campo \"idPos\" viene resistuito nel json di risposta nella get dello scontrino.\n\nPer i possibili valori del parametro \"docStatus\" andare sulla reference page.",
+        "operationId" : "updatePurchaseTicket",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "recalcPayments",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Delete a purchase ticket",
+        "description" : "",
+        "operationId" : "deletePurchaseTicket",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
       }
     },
     "/purchases/{id}/vendorpayment" : {
@@ -5156,6 +8908,83 @@
         "summary" : "Delete vendor payment",
         "description" : "",
         "operationId" : "deleteVendorPayment",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/purchases/{id}/writeoff" : {
+      "get" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Get a purchase writeoff",
+        "description" : "",
+        "operationId" : "getPurchaseTicketWriteoff",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Update a purchase writeoff",
+        "description" : "NOTA BENE: Per modificare una riga del documento esistente mettere nel payload il field \"idPos\". Se si vuole aggiungere una nuova riga al documento, non passare il field \"idPos\".\n\nIl campo \"idPos\" viene resistuito nel json di risposta nella get dello scontrino.\n\nPer i possibili valori del parametro \"docStatus\" andare sulla reference page.",
+        "operationId" : "updatePurchaseWriteoff",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentApi"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "simulation",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "recalcPayments",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "PuchaseDocument" ],
+        "summary" : "Delete a purchase writeoff",
+        "description" : "",
+        "operationId" : "deletePurchaseTicketWriteoff",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "id",
@@ -5914,6 +9743,52 @@
         }
       }
     },
+    "/sales/orderstogoodsissue" : {
+      "post" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Create good issue from orders",
+        "description" : "idNumerator: Id Numerator\n\ndocDate: Good Issue's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)\n\nidDocumentTypeExt: Id reason\n\ndestIdStorage: Id destination storage (for transfer reason)\n\ndestIdLocation: Id destination location (for transfer reason)",
+        "operationId" : "ordersToGoodissue",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentListGoodReceiptIssueTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/sales/orderstoinvoice" : {
+      "post" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Create invoice from orders",
+        "description" : "idNumerator: Id Numerator\n\ndocDate: Good Issue's Doc Date and Registration Date (in milliseconds da midnight, January 1, 1970)\n\n",
+        "operationId" : "ordersToInvoice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentListTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/sales/reports" : {
       "get" : {
         "tags" : [ "SaleDocument" ],
@@ -6025,9 +9900,56 @@
       }
     },
     "/sales/writeoff" : {
+      "get" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Get all sale writeoffs",
+        "description" : "",
+        "operationId" : "getAllSaleTicketsWriteoff",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "freeText",
+          "in" : "query",
+          "description" : "filter on company name",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "idContact",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "gtDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ltDocDateMillins",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
       "post" : {
         "tags" : [ "SaleDocument" ],
-        "summary" : "Creates a sales ticket writeoff",
+        "summary" : "Create a sale writeoff",
         "description" : "",
         "operationId" : "createSalesWriteoff",
         "consumes" : [ "application/json" ],
@@ -6267,6 +10189,35 @@
           "required" : true,
           "type" : "integer",
           "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/sales/{id}/goodissuestoproformainvoice" : {
+      "post" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Create a proforma invoice from good issue",
+        "description" : "idNumerator: Id Numeratore/Sezionale\n\ndocDate: Data Documento (numero di milliseconds da midnight, January 1, 1970)",
+        "operationId" : "goodIssueToProformaInvoice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
         } ],
         "responses" : {
           "default" : {
@@ -6833,12 +10784,70 @@
         }
       }
     },
+    "/sales/{id}/orderstoproformainvoice" : {
+      "post" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Create a proforma invoice from sale order",
+        "description" : "idNumerator: Id Numeratore/Sezionale\n\ndocDate: Data Documento (numero di milliseconds da midnight, January 1, 1970)",
+        "operationId" : "ordersToProformaInvoice",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/sales/{id}/orderstoticket" : {
       "post" : {
         "tags" : [ "SaleDocument" ],
         "summary" : "Crea uno Scontrino da un Ordine",
         "description" : "idNumerator: Id Numeratore/Sezionale\n\ndocDate: Data Documento e Data registrazione dello scontrino (numero di milliseconds da midnight, January 1, 1970)",
         "operationId" : "ordersToTicket",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/DocumentTransformationApi"
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/sales/{id}/proformainvoicetoinvoice" : {
+      "post" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Create an invoice from a proforma invoice",
+        "description" : "idNumerator: Id Numeratore/Sezionale\n\ndocDate: Data Documento (numero di milliseconds da midnight, January 1, 1970)",
+        "operationId" : "proformaInvoiceToInvoice",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -6972,9 +10981,28 @@
       }
     },
     "/sales/{id}/writeoff" : {
+      "get" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Get a sale writeoff",
+        "description" : "",
+        "operationId" : "getSaleTicketWriteoff",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
       "put" : {
         "tags" : [ "SaleDocument" ],
-        "summary" : "Modifica lo storno di uno scontrino (di vendita)",
+        "summary" : "Update a sale writeoff",
         "description" : "NOTA BENE: Per modificare una riga del documento esistente mettere nel payload il field \"idPos\". Se si vuole aggiungere una nuova riga al documento, non passare il field \"idPos\".\n\nIl campo \"idPos\" viene resistuito nel json di risposta nella get dello scontrino.\n\nPer i possibili valori del parametro \"docStatus\" andare sulla reference page.",
         "operationId" : "updateSalesWriteoff",
         "consumes" : [ "application/json" ],
@@ -7002,6 +11030,25 @@
           "in" : "query",
           "required" : false,
           "type" : "boolean"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "SaleDocument" ],
+        "summary" : "Delete a sale writeoff",
+        "description" : "",
+        "operationId" : "deleteSaleTicketWriteoff",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
         } ],
         "responses" : {
           "default" : {
@@ -8242,6 +12289,96 @@
         }
       }
     },
+    "/vendors/{idVendor}/quota" : {
+      "get" : {
+        "tags" : [ "Vendor" ],
+        "summary" : "Get vendor quota",
+        "description" : "",
+        "operationId" : "getVendorQuota",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idVendor",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "offset",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Vendor" ],
+        "summary" : "Creates or update vendor quota",
+        "description" : "",
+        "operationId" : "upsertVendorQuota",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idVendor",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/VendorQuota"
+            }
+          }
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/vendors/{idVendor}/quota/{idMaterial}" : {
+      "delete" : {
+        "tags" : [ "Vendor" ],
+        "summary" : "Deletes a vendor quota",
+        "description" : "",
+        "operationId" : "deleteVendorQuota",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "idVendor",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        }, {
+          "name" : "idMaterial",
+          "in" : "path",
+          "required" : true,
+          "type" : "string",
+          "pattern" : "(.+)?"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
     "/vendors/{idvendor}" : {
       "get" : {
         "tags" : [ "Vendor" ],
@@ -8563,6 +12700,38 @@
         }
       }
     },
+    "BizTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "macroarea_IT" : {
+          "type" : "string"
+        },
+        "macroarea_EN" : {
+          "type" : "string"
+        },
+        "macroarea_BG" : {
+          "type" : "string"
+        },
+        "macroarea_ES" : {
+          "type" : "string"
+        },
+        "category_IT" : {
+          "type" : "string"
+        },
+        "category_EN" : {
+          "type" : "string"
+        },
+        "category_BG" : {
+          "type" : "string"
+        },
+        "category_ES" : {
+          "type" : "string"
+        },
+        "workactivity" : {
+          "type" : "string"
+        }
+      }
+    },
     "BodyPart" : {
       "type" : "object",
       "properties" : {
@@ -8598,6 +12767,184 @@
               "$ref" : "#/definitions/ParameterizedHeader"
             }
           }
+        }
+      }
+    },
+    "BuApi" : {
+      "type" : "object",
+      "properties" : {
+        "idBU" : {
+          "type" : "string",
+          "example" : "U3"
+        },
+        "buName" : {
+          "type" : "string",
+          "example" : "Unità Tre"
+        },
+        "buType" : {
+          "type" : "string",
+          "example" : "1"
+        },
+        "companyName" : {
+          "type" : "string",
+          "example" : "Test Giobby CH"
+        },
+        "vatCode" : {
+          "type" : "string",
+          "example" : "02853780696"
+        },
+        "fiscalCode" : {
+          "type" : "string",
+          "example" : "02853780696"
+        },
+        "address1" : {
+          "type" : "string",
+          "example" : "C.da Cerreto"
+        },
+        "address2" : {
+          "type" : "string",
+          "example" : "493"
+        },
+        "city" : {
+          "type" : "string",
+          "example" : "Miglianico"
+        },
+        "pr" : {
+          "type" : "string",
+          "example" : "CH"
+        },
+        "postalCode" : {
+          "type" : "string",
+          "example" : "66010"
+        },
+        "country" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "state" : {
+          "type" : "string",
+          "example" : "Abruzzo"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "giobby@giobby.com"
+        },
+        "email2" : {
+          "type" : "string",
+          "example" : "giobby@pec.it"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : "+390871123456"
+        },
+        "faxNumber" : {
+          "type" : "string",
+          "example" : "+390871123456"
+        },
+        "taxPeriod" : {
+          "type" : "string",
+          "example" : "MONTHLY"
+        },
+        "idBank" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "1"
+        },
+        "legalRep" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "legalRepPhone" : {
+          "type" : "string",
+          "example" : "IT"
+        }
+      }
+    },
+    "BupApi" : {
+      "type" : "object",
+      "properties" : {
+        "idBUP" : {
+          "type" : "string",
+          "example" : "P5"
+        },
+        "bupName" : {
+          "type" : "string",
+          "example" : "P5 Punto Vendita"
+        },
+        "buId" : {
+          "type" : "string",
+          "example" : "U5"
+        },
+        "address1" : {
+          "type" : "string",
+          "example" : "Largo Filomena Delli Castelli, 3"
+        },
+        "address2" : {
+          "type" : "string",
+          "example" : "41"
+        },
+        "city" : {
+          "type" : "string",
+          "example" : "Chieti"
+        },
+        "pr" : {
+          "type" : "string",
+          "example" : "CH"
+        },
+        "postalCode" : {
+          "type" : "string",
+          "example" : "66100"
+        },
+        "state" : {
+          "type" : "string",
+          "example" : "Abruzzo"
+        },
+        "country" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : "+390871123456"
+        },
+        "faxNumber" : {
+          "type" : "string",
+          "example" : "+390871123456"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "dev@giobby.com"
+        },
+        "getxLon" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "getyLat" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "userAuthList" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "BupStorageApi" : {
+      "type" : "object",
+      "properties" : {
+        "idBu" : {
+          "type" : "string",
+          "example" : "U5"
+        },
+        "idBup" : {
+          "type" : "string",
+          "example" : "P5"
+        },
+        "idStorage" : {
+          "type" : "string",
+          "example" : "MB"
         }
       }
     },
@@ -8644,15 +12991,15 @@
       "properties" : {
         "name" : {
           "type" : "string",
-          "example" : "Chieti"
+          "example" : "Abano Terme"
         },
         "pr" : {
           "type" : "string",
-          "example" : "CH"
+          "example" : "PD"
         },
         "zip" : {
           "type" : "string",
-          "example" : "66100"
+          "example" : "35030"
         },
         "country" : {
           "type" : "string",
@@ -8661,6 +13008,10 @@
         "state" : {
           "type" : "string",
           "example" : "Abruzzo"
+        },
+        "note" : {
+          "type" : "string",
+          "example" : " "
         }
       }
     },
@@ -8811,6 +13162,27 @@
         }
       }
     },
+    "ContactRoleApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        }
+      }
+    },
     "ContentDisposition" : {
       "type" : "object",
       "properties" : {
@@ -8841,6 +13213,19 @@
         "size" : {
           "type" : "integer",
           "format" : "int64"
+        }
+      }
+    },
+    "CountryApi" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Italia"
         }
       }
     },
@@ -9001,6 +13386,51 @@
         }
       }
     },
+    "CurrencyApi" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "example" : "EUR"
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Euro"
+        },
+        "symbol" : {
+          "type" : "string",
+          "example" : "€"
+        },
+        "decimal" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "2"
+        }
+      }
+    },
+    "CurrencyChangeApi" : {
+      "type" : "object",
+      "properties" : {
+        "source" : {
+          "type" : "string",
+          "example" : "USD"
+        },
+        "dest" : {
+          "type" : "string",
+          "example" : "EUR"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "1784713516234"
+        },
+        "changeCurr" : {
+          "type" : "number",
+          "format" : "double",
+          "example" : "0.0"
+        }
+      }
+    },
     "CustomerApi" : {
       "type" : "object",
       "required" : [ "contact" ],
@@ -9089,6 +13519,83 @@
         }
       }
     },
+    "CustomerQuota" : {
+      "type" : "object",
+      "properties" : {
+        "idMaterial" : {
+          "type" : "string"
+        },
+        "idCustomer" : {
+          "type" : "string"
+        },
+        "customerIdMaterial" : {
+          "type" : "string"
+        }
+      }
+    },
+    "CustomerTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DeliveredByTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string"
+        },
+        "description_EN" : {
+          "type" : "string"
+        },
+        "description_ES" : {
+          "type" : "string"
+        },
+        "description_BG" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DeliveryChargeToApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string"
+        },
+        "description_EN" : {
+          "type" : "string"
+        },
+        "description_ES" : {
+          "type" : "string"
+        },
+        "description_BG" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DeliveryReasonTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
+        }
+      }
+    },
     "DeviceTokenApi" : {
       "type" : "object",
       "properties" : {
@@ -9097,6 +13604,57 @@
         },
         "deviceToken" : {
           "type" : "string"
+        }
+      }
+    },
+    "DocNumerator" : {
+      "type" : "object",
+      "properties" : {
+        "idNumerator" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "idDocType" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "docNumberPrefix" : {
+          "type" : "string"
+        },
+        "number" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "year" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "groupName" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DocNumeratorDaily" : {
+      "type" : "object",
+      "properties" : {
+        "idNumerator" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "idDocType" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "docNumberPrefix" : {
+          "type" : "string"
+        },
+        "number" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time"
         }
       }
     },
@@ -9252,6 +13810,9 @@
           "type" : "integer",
           "format" : "int32"
         },
+        "eidocstatus" : {
+          "type" : "string"
+        },
         "rows" : {
           "type" : "array",
           "items" : {
@@ -9374,6 +13935,41 @@
         "withholdingTax" : {
           "type" : "boolean",
           "default" : false
+        }
+      }
+    },
+    "DocumentListGoodReceiptIssueTransformationApi" : {
+      "type" : "object",
+      "properties" : {
+        "idNumerator" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "1"
+        },
+        "docNumber" : {
+          "type" : "string",
+          "example" : "N1234/2024"
+        },
+        "docDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "1893491100000"
+        },
+        "idDocumentList" : {
+          "type" : "string",
+          "example" : "1,2,3"
+        },
+        "idDocumentTypeExt" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : "0"
+        },
+        "destIdStorage" : {
+          "type" : "string",
+          "example" : "MB"
+        },
+        "destIdLocation" : {
+          "type" : "string"
         }
       }
     },
@@ -9671,18 +14267,18 @@
         "providers" : {
           "$ref" : "#/definitions/Providers"
         },
-        "name" : {
-          "type" : "string"
-        },
-        "value" : {
-          "type" : "string"
-        },
         "simple" : {
           "type" : "boolean",
           "default" : false
         },
         "formDataContentDisposition" : {
           "$ref" : "#/definitions/FormDataContentDisposition"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
         },
         "parameterizedHeaders" : {
           "type" : "object",
@@ -9759,6 +14355,27 @@
         },
         "destIdLocation" : {
           "type" : "string"
+        }
+      }
+    },
+    "GoodsAppearanceTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
         }
       }
     },
@@ -10007,6 +14624,27 @@
         }
       }
     },
+    "OfficeTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
+        }
+      }
+    },
     "ParameterizedHeader" : {
       "type" : "object",
       "properties" : {
@@ -10202,7 +14840,16 @@
           "type" : "integer",
           "format" : "int32"
         },
-        "description" : {
+        "description_IT" : {
+          "type" : "string"
+        },
+        "description_EN" : {
+          "type" : "string"
+        },
+        "description_ES" : {
+          "type" : "string"
+        },
+        "description_BG" : {
           "type" : "string"
         },
         "endOfMonth" : {
@@ -10224,10 +14871,6 @@
     "PaymentTermPosApi" : {
       "type" : "object",
       "properties" : {
-        "id" : {
-          "type" : "integer",
-          "format" : "int32"
-        },
         "days" : {
           "type" : "integer",
           "format" : "int32"
@@ -10235,6 +14878,26 @@
         "percentage" : {
           "type" : "number",
           "format" : "double"
+        }
+      }
+    },
+    "PaymentTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string"
+        },
+        "description_EN" : {
+          "type" : "string"
+        },
+        "description_ES" : {
+          "type" : "string"
+        },
+        "description_BG" : {
+          "type" : "string"
+        },
+        "external_Id" : {
+          "type" : "string"
         }
       }
     },
@@ -10330,6 +14993,27 @@
         "sourceId" : {
           "type" : "string",
           "example" : "21"
+        }
+      }
+    },
+    "ProcurementTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
         }
       }
     },
@@ -10569,6 +15253,49 @@
         }
       }
     },
+    "ProductBomApi" : {
+      "type" : "object",
+      "properties" : {
+        "amount" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "attributeCombinationDesc" : {
+          "type" : "string"
+        },
+        "baseQuantity" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "string"
+        },
+        "idAttributeCombination" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "idAttributeCombinationConcat" : {
+          "type" : "string"
+        },
+        "idMaterial" : {
+          "type" : "string"
+        },
+        "level" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "purchasePrice" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "um" : {
+          "type" : "string"
+        }
+      }
+    },
     "ProductGroupApi" : {
       "type" : "object",
       "properties" : {
@@ -10609,6 +15336,27 @@
         "seq" : {
           "type" : "integer",
           "format" : "int32"
+        }
+      }
+    },
+    "ProductTypeApi" : {
+      "type" : "object",
+      "properties" : {
+        "description_IT" : {
+          "type" : "string",
+          "example" : "IT"
+        },
+        "description_EN" : {
+          "type" : "string",
+          "example" : "EN"
+        },
+        "description_ES" : {
+          "type" : "string",
+          "example" : "ES"
+        },
+        "description_BG" : {
+          "type" : "string",
+          "example" : "BG"
         }
       }
     },
@@ -11655,6 +16403,20 @@
         "locked" : {
           "type" : "boolean",
           "default" : false
+        }
+      }
+    },
+    "VendorQuota" : {
+      "type" : "object",
+      "properties" : {
+        "idMaterial" : {
+          "type" : "string"
+        },
+        "idVendor" : {
+          "type" : "string"
+        },
+        "vendorIdMaterial" : {
+          "type" : "string"
         }
       }
     }

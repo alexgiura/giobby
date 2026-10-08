@@ -14,9 +14,6 @@ import (
 
 // ReferenceRepository persists lookup/reference data.
 type ReferenceRepository interface {
-	ListCountries(ctx context.Context, q models.CountryListQuery) ([]models.Country, error)
-	GetCountry(ctx context.Context, id string) (*models.Country, error)
-
 	ListCities(ctx context.Context, q models.CityListQuery) ([]models.City, error)
 	CreateCity(ctx context.Context, city *models.City) (*models.City, error)
 
@@ -43,47 +40,6 @@ type referenceRepository struct {
 
 func NewReferenceRepository(db *pgxpool.Pool) ReferenceRepository {
 	return &referenceRepository{db: db}
-}
-
-func (r *referenceRepository) ListCountries(ctx context.Context, q models.CountryListQuery) ([]models.Country, error) {
-	sql := `SELECT id, description FROM countries WHERE 1=1`
-	args := []any{}
-	n := 1
-	if s := strings.TrimSpace(q.Description); s != "" {
-		sql += fmt.Sprintf(` AND description ILIKE $%d`, n)
-		args = append(args, "%"+s+"%")
-		n++
-	}
-	sql += fmt.Sprintf(` ORDER BY description LIMIT $%d OFFSET $%d`, n, n+1)
-	args = append(args, limitOrDefault(q.Limit), q.Offset)
-
-	rows, err := r.db.Query(ctx, sql, args...)
-	if err != nil {
-		return nil, fmt.Errorf("list countries: %w", err)
-	}
-	defer rows.Close()
-
-	var out []models.Country
-	for rows.Next() {
-		var c models.Country
-		if err := rows.Scan(&c.ID, &c.Description); err != nil {
-			return nil, fmt.Errorf("scan country: %w", err)
-		}
-		out = append(out, c)
-	}
-	return out, rows.Err()
-}
-
-func (r *referenceRepository) GetCountry(ctx context.Context, id string) (*models.Country, error) {
-	row := r.db.QueryRow(ctx, `SELECT id, description FROM countries WHERE id = $1`, strings.TrimSpace(id))
-	var c models.Country
-	if err := row.Scan(&c.ID, &c.Description); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, nil
-		}
-		return nil, fmt.Errorf("get country: %w", err)
-	}
-	return &c, nil
 }
 
 func (r *referenceRepository) ListCities(ctx context.Context, q models.CityListQuery) ([]models.City, error) {
